@@ -34,33 +34,26 @@ fun ScrollableCurrencyList(prefix: MutableState<String>, currencyRateSearcher: C
             delay(300) // Debounce time
             println("Searching")
             isLoading.value = true
-            currencyRates.value = currencyRateSearcher.searchCurrencyRateByPrefix(prefix.value, "USD")
+            currencyRates.value = currencyRateSearcher.searchCurrencyRateByPrefix(prefix.value, "USD").take(3)
             isLoading.value = false
         }
     }
 
     if(isLoading.value){
         Box(
-            modifier = Modifier.fillMaxSize()
-                .padding(top = 2.dp),
+            modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             CircularProgressIndicator() //change to skeletons
         }
     } else {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .dropShadow(
-                    color = Color.Black.copy(0.10f),
-                    shape = RectangleShape,
-                    blur = 4.dp,
-                )
-
-        ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .dropShadow(
+                        shape = RectangleShape,
+                        color = Color.Black.copy(0.10f),
+                        blur = 4.dp
+                    )
                     .verticalScroll(rememberScrollState())
             ) {
                 currencyRates.value.forEachIndexed { index, currencyRate ->
@@ -72,4 +65,4 @@ fun ScrollableCurrencyList(prefix: MutableState<String>, currencyRateSearcher: C
             }
         }
     }
-}
+

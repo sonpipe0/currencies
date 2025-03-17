@@ -1,5 +1,6 @@
 package com.example.currencies
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,7 +29,8 @@ import com.example.currencies.search.hooks.MockCurrencyRateSearcher
 import com.example.currencies.ui.theme.CurrenciesTheme
 
 class MainActivity : ComponentActivity() {
-    val currencyRateSearcher: CurrencyRateSearcher = MockCurrencyRateSearcher();
+    private val currencyRateSearcher: CurrencyRateSearcher = MockCurrencyRateSearcher();
+    @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,14 +41,14 @@ class MainActivity : ComponentActivity() {
                     interactionSource = remember { MutableInteractionSource() },
                     indication = null
                 ) { hideKeyBoard.value = true},
-                    containerColor = Color(0xffEDEDED)) { innerPadding ->
+                    containerColor = Color(0xffEDEDED)) {
                     val text: MutableState<String> = remember { mutableStateOf("") }
                     Column(
-                        modifier = Modifier.fillMaxSize().padding(innerPadding),
-                        verticalArrangement = Arrangement.spacedBy(5.dp),
+                        modifier = Modifier.fillMaxSize().padding(vertical = 40.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
                     ) {
                         Column(
-                            modifier = Modifier.padding(8.dp),
+                            modifier = Modifier.padding(horizontal = 8.dp),
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
                             SearchBar(text = text, hideKeyBoard = hideKeyBoard)

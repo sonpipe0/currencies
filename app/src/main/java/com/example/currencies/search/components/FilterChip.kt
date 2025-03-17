@@ -17,12 +17,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dropShadow
 
 @Composable
 fun FilterChip(filter: String, color: Color,textColor: Color, isRounded: Boolean = false ,onClick: () -> Unit) {
 
     Box(
         modifier = Modifier
+            .dropShadow(
+                shape = if (isRounded) RoundedCornerShape(percent = 100) else RoundedCornerShape(32.dp),
+                color = Color.Black.copy(0.25f),
+                offsetY = 2.dp,
+                offsetX = 2.dp,
+                blur = 4.dp
+            )
             .clip(if (isRounded) RoundedCornerShape(percent = 100) else RoundedCornerShape(32.dp))
             .background(color)
             .clickable(onClick = onClick)
