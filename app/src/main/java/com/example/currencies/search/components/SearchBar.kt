@@ -21,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
@@ -33,7 +34,7 @@ import dropShadow
 
 
 @Composable
-fun SearchBar(text: MutableState<String> , hideKeyBoard: MutableState<Boolean> = remember { mutableStateOf(false) }) {
+fun SearchBar(text: MutableState<String> , focusManager: FocusManager ,hideKeyBoard: MutableState<Boolean> = remember { mutableStateOf(false) }) {
     Row(
        modifier = Modifier.fillMaxWidth()
            .dropShadow(
@@ -47,14 +48,17 @@ fun SearchBar(text: MutableState<String> , hideKeyBoard: MutableState<Boolean> =
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        val focusManager = LocalFocusManager.current
         BasicTextField(
             value = text.value,
-            onValueChange = {update ->
-                if(update.length <23 ) text.value = update},
+            onValueChange = { update ->
+                if (update.length <= 23 || update.length < text.value.length) {
+                    text.value = update
+                }
+            },
             modifier = Modifier.weight(1f).onFocusChanged { focusState ->
                 if (focusState.isFocused) {
                     hideKeyBoard.value = false
+                    text.value = ""
                 }
                 if (!focusState.isFocused) {
                     focusManager.clearFocus()
