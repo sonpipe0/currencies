@@ -28,6 +28,7 @@ fun SearchPage(hideKeyBoard: MutableState<Boolean>) {
     val currencyRateSearcher: CurrencyRateSearcher = MockCurrencyRateSearcher();
     val text: MutableState<String> = remember { mutableStateOf("") }
     return Column(
+        modifier = Modifier.padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         Column(
