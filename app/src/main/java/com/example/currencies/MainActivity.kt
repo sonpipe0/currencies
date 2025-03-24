@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
+import com.example.currencies.navigation.BottomNavigationBar
 import com.example.currencies.navigation.NavHostComposable
 import com.example.currencies.ui.theme.CurrenciesTheme
 
@@ -26,11 +27,22 @@ class MainActivity : ComponentActivity() {
             val hideKeyBoard = remember { mutableStateOf(false) }
             val navController = rememberNavController()
             CurrenciesTheme {
-                Scaffold(modifier = Modifier.fillMaxSize().clickable(
-                    interactionSource = remember { MutableInteractionSource() },
-                    indication = null
-                ) { hideKeyBoard.value = true},
-                    containerColor = Color(0xffEDEDED)) { innerPadding ->
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null
+                        ) { hideKeyBoard.value = true },
+                    bottomBar = {
+                        BottomNavigationBar { dest ->
+                            if (dest != navController.currentDestination?.route) {
+                                navController.navigate(dest)
+                            }
+                        }
+                    },
+                    containerColor = Color(0xffEDEDED)
+                ) { innerPadding ->
                     NavHostComposable(hideKeyBoard, innerPadding, navController)
                 }
             }
