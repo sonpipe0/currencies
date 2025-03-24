@@ -21,11 +21,13 @@ fun SwapPage() {
     )
     {
         Text("Select Swap Input")
+        SwapInputSelector(true)
         Icon(
             imageVector = Icons.Outlined.SyncAlt,
             contentDescription = "Swap Icon",
             modifier = Modifier.size(96.dp),
         )
+        SwapInputSelector(false)
         Text("Select Swap Input")
     }
 }

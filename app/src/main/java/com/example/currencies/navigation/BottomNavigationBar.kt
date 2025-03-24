@@ -73,7 +73,7 @@ fun TabView(tabBarItems: List<TabBarItem>, onNavigate: (String) -> Unit) {
                 colors = NavigationBarItemColors(
                     Color.Black,
                     Color.Black,
-                    Color(0xffffbfab),
+                    Color(0xFFFFE0B2),
                     Color.Black,
                     Color.Black,
                     Color.Black,
