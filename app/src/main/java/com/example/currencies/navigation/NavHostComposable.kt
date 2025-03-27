@@ -33,7 +33,7 @@ fun NavHostComposable(hideKeyboard: MutableState<Boolean> ,innerPadding: Padding
             SearchPage(hideKeyBoard = hideKeyboard)
         }
         composable(route = Screens.SWAP.name) {
-            SwapPage()
+            SwapPage(hideKeyBoard = hideKeyboard)
         }
         composable(route = Screens.STARRED.name) {
             SearchPage(hideKeyBoard = hideKeyboard)
