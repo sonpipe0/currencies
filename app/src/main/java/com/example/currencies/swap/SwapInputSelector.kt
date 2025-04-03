@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -33,12 +34,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onPreInterceptKeyBeforeSoftKeyboard
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -46,11 +54,14 @@ import com.example.currencies.utils.CurrencyMapper
 import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun SwapInputSelector(
     enabled: Boolean,
-    value: MutableState<Int>,
+    value: MutableState<String>,
     code: MutableState<String>,
+    focusManager: FocusManager,
+    hideKeyBoard: MutableState<Boolean>
 ) {
     return Row(
         horizontalArrangement = Arrangement.spacedBy(0.dp),
@@ -75,25 +86,50 @@ fun SwapInputSelector(
             code = code
         )
         BasicTextField(
-            value = value.value.toString(),
+            value = value.value,
             onValueChange = {
-                value.value = it.toIntOrNull() ?: 0
+                if (it.any { char -> !char.isDigit() && !char.isWhitespace() }) {
+                    return@BasicTextField
+                }
+                if (it.length < 6) {
+                    value.value = it
+                }
             },
             enabled = enabled,
             modifier = Modifier
-                .padding(10.dp)
                 .fillMaxWidth()
+                .padding(end = 12.dp)
                 .weight(0.5f)
+                .onPreInterceptKeyBeforeSoftKeyboard {
+                    if (it.key == Key.Back) {
+                        hideKeyBoard.value = true
+                        focusManager.clearFocus()
+                    }
+                    false
+                }
+                .onFocusChanged {
+                    if (it.isFocused) {
+                        hideKeyBoard.value = false
+                    }
+                    if (!it.isFocused) {
+                        hideKeyBoard.value = true
+                    }
+                }
                 .align(Alignment.CenterVertically),
             singleLine = true,
+            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
             textStyle =
             TextStyle(
                 color = Color.Black,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 30.sp,
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.End
             ),
         )
+        if (hideKeyBoard.value) {
+            println("hideKeyboard: ${hideKeyBoard.value}")
+            focusManager.clearFocus()
+        }
     }
 }
 

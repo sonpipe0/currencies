@@ -23,7 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -32,7 +31,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,9 +43,9 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
-    val numberInput: MutableState<Int> = remember { mutableIntStateOf(0) }
+    val numberInput: MutableState<String> = remember { mutableStateOf("0") }
     val codeInput: MutableState<String> = remember { mutableStateOf("USD") }
-    val numberOutput: MutableState<Int> = remember { mutableIntStateOf(0) }
+    val numberOutput: MutableState<String> = remember { mutableStateOf("0") }
     val codeOutput: MutableState<String> = remember { mutableStateOf("EUR") }
     var rotationAngle by remember { mutableFloatStateOf(90f) }
     val animatedRotationAngle by animateFloatAsState(
@@ -62,6 +63,7 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
     ) {
+        val focusManager: FocusManager = LocalFocusManager.current
         Text(
             text = "Swap",
             fontSize = 32.sp,
@@ -78,8 +80,8 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
             ) {
-                SwapInputSelector(true, numberInput, codeInput)
-                SwapInputSelector(false, numberOutput, codeOutput)
+                SwapInputSelector(true, numberInput, codeInput, focusManager, hideKeyBoard)
+                SwapInputSelector(false, numberOutput, codeOutput, focusManager, hideKeyBoard)
             }
             Box(
                 modifier = Modifier
