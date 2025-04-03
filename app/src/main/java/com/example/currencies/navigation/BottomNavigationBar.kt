@@ -11,7 +11,6 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
@@ -23,8 +22,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import dropShadow
 
 @Composable
 fun BottomNavigationBar(
@@ -66,6 +67,13 @@ fun TabView(tabBarItems: List<TabBarItem>, onNavigate: (String) -> Unit) {
 
     NavigationBar (
         containerColor = Color.White,
+        modifier = Modifier.dropShadow(
+            color = Color.Black.copy(0.25f),
+            offsetX = 0.dp,
+            offsetY = 2.dp,
+            blur = 8.dp,
+            shape = RectangleShape,
+        )
     ) {
         tabBarItems.forEachIndexed { index, tabBarItem ->
             NavigationBarItem(

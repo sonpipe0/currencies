@@ -1,41 +1,138 @@
 package com.example.currencies.swap
 
+import RatesComponent
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SyncAlt
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusManager
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-
+import androidx.compose.ui.unit.sp
+import dropShadow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @Composable
 fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
-    val focusManager: FocusManager = LocalFocusManager.current
-    Column(
-        modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
-    )
-    {
-        Text("Select Swap Input")
-        SwapInputSelector(true, hideKeyBoard, focusManager)
-        Icon(
-            imageVector = Icons.Outlined.SyncAlt,
-            contentDescription = "Swap Icon",
-            modifier = Modifier.size(96.dp),
+    val numberInput: MutableState<Int> = remember { mutableIntStateOf(0) }
+    val codeInput: MutableState<String> = remember { mutableStateOf("USD") }
+    val numberOutput: MutableState<Int> = remember { mutableIntStateOf(0) }
+    val codeOutput: MutableState<String> = remember { mutableStateOf("EUR") }
+    var rotationAngle by remember { mutableFloatStateOf(90f) }
+    val animatedRotationAngle by animateFloatAsState(
+        targetValue = rotationAngle,
+        animationSpec = tween(
+            durationMillis = 1000,
         )
-        SwapInputSelector(false, hideKeyBoard, focusManager)
-        Text("Select Swap Input")
+    )
+    val scope = rememberCoroutineScope()
+
+    Column(
+        modifier = Modifier
+            .background(Color.White)
+            .padding(top = 64.dp, bottom = 16.dp, start = 32.dp, end = 32.dp),
+        horizontalAlignment = Alignment.Start,
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
+    ) {
+        Text(
+            text = "Swap",
+            fontSize = 32.sp,
+            fontWeight = FontWeight.SemiBold,
+            color = Color.Black,
+        )
+        Box(
+            contentAlignment = Alignment.CenterEnd,
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(vertical = 32.dp),
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
+            ) {
+                SwapInputSelector(true, numberInput, codeInput)
+                SwapInputSelector(false, numberOutput, codeOutput)
+            }
+            Box(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .offset(x = (-10).dp)
+                    .dropShadow(
+                        color = Color.Black.copy(0.1f),
+                        offsetX = 0.dp,
+                        offsetY = 0.dp,
+                        blur = 8.dp,
+                        shape = CircleShape,
+                    )
+                    .border(
+                        width = 1.dp,
+                        color = Color.Black.copy(0.1f),
+                        shape = CircleShape,
+                    )
+                    .rotate(animatedRotationAngle)
+                    .clip(CircleShape)
+                    .background(color = Color.White)
+                    .padding(8.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.SyncAlt,
+                    contentDescription = "Swap Icon",
+                    modifier = Modifier
+                        .size(24.dp)
+                        .clickable(
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        ) {
+                            scope.launch {
+                                rotateAnimation(rotationAngle, 800) { newAngle ->
+                                    rotationAngle = newAngle
+                                }
+                            }.invokeOnCompletion {
+                                val temp = codeInput.value
+                                codeInput.value = codeOutput.value
+                                codeOutput.value = temp
+                                val tempNumber = numberInput.value
+                                numberInput.value = numberOutput.value
+                                numberOutput.value = tempNumber
+                            }
+                        }
+                )
+            }
+        }
+        RatesComponent(baseCoin = "USD")
     }
+}
+
+suspend fun rotateAnimation(currentAngle: Float, duration: Long, onAnimationEnd: (Float) -> Unit) {
+    val newAngle = currentAngle + 180f
+    onAnimationEnd(newAngle)
+    delay(duration)
 }
