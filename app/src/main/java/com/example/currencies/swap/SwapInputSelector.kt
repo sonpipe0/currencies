@@ -35,6 +35,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,10 +52,16 @@ import androidx.compose.ui.unit.sp
 import com.example.currencies.search.components.SearchBar
 import com.example.currencies.utils.CurrencyMapper
 import dropShadow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun SwapInputSelector(enabled: Boolean, hideKeyBoard: MutableState<Boolean>, focusManager: FocusManager) {
+fun SwapInputSelector(
+    enabled: Boolean,
+    hideKeyBoard: MutableState<Boolean>,
+    focusManager: FocusManager
+) {
     return Row(
         horizontalArrangement = Arrangement.spacedBy(0.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -109,10 +116,21 @@ fun InputMenu(modifier: Modifier, hideKeyBoard: MutableState<Boolean>, focusMana
     var userInput by remember { mutableStateOf("USD") }
     val menuItemData = CurrencyMapper().getCurrencyData()
     var showBottomSheet by remember { mutableStateOf(false) }
-    var searchBarText = remember {
-        mutableStateOf("")
+    val bottomSheet = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true,
+    )
+    val scope = rememberCoroutineScope()
+    val closeSheet: (selectedText: String) -> Unit = { selectedText ->
+        scope.launch {
+            bottomSheet.hide()
+        }.invokeOnCompletion {
+            scope.launch {
+                userInput = selectedText // there's a bug if you set it before the hide with the bottomSheet animation
+                showBottomSheet = false
+            }
+        }
     }
-
+    println("showBottomSheet: $showBottomSheet")
     Row(
         horizontalArrangement = Arrangement.spacedBy(0.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -152,19 +170,14 @@ fun InputMenu(modifier: Modifier, hideKeyBoard: MutableState<Boolean>, focusMana
         ModalBottomSheet(
             onDismissRequest = { showBottomSheet = false },
             modifier = Modifier.fillMaxSize(),
-            sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { it != SheetValue.Hidden }),
+            sheetState = bottomSheet,
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize().verticalScroll(rememberScrollState())
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
                     .padding(16.dp)
             ) {
-                SearchBar(
-                    text = searchBarText,
-                    focusManager = focusManager,
-                    hideKeyBoard = hideKeyBoard,
-
-                )
                 var currentContinent: String = ""
                 menuItemData.forEach { currency ->
                     if (currency.value.second != currentContinent) {
@@ -180,7 +193,14 @@ fun InputMenu(modifier: Modifier, hideKeyBoard: MutableState<Boolean>, focusMana
                         )
                     }
 
-                    Row {
+                    Row(
+                        modifier = Modifier
+                            .clickable {
+                                closeSheet(currency.key)
+                            }
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                    ) {
                         Image(
                             painter = painterResource(id = currency.value.fourth),
                             contentDescription = currency.value.first,
