@@ -27,6 +27,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.currencies.common.CustomFocusableTextField
 import dropShadow
 
 
@@ -45,23 +46,14 @@ fun SearchBar(text: MutableState<String> , focusManager: FocusManager ,hideKeyBo
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        BasicTextField(
+        CustomFocusableTextField(
             value = text.value,
             onValueChange = { update ->
                 if (update.length <= 23 || update.length < text.value.length) {
                     text.value = update
                 }
             },
-            modifier = Modifier.weight(1f).onFocusChanged { focusState ->
-                if (focusState.isFocused) {
-                    hideKeyBoard.value = false
-                    text.value = ""
-                }
-                if (!focusState.isFocused) {
-                    focusManager.clearFocus()
-                }
-            },
-            singleLine = true,
+            modifier = Modifier.weight(1f),
             textStyle = TextStyle(
                 color = Color.Black,
                 fontSize = 20.sp
@@ -71,7 +63,10 @@ fun SearchBar(text: MutableState<String> , focusManager: FocusManager ,hideKeyBo
                 focusManager.clearFocus()
                 hideKeyBoard.value = true
                 text.value = ""
-            })
+            }),
+            focusManager = focusManager,
+            hideKeyBoard = hideKeyBoard,
+            enabled = true,
         )
         Icon(
             imageVector = Icons.Outlined.Search,
@@ -84,8 +79,5 @@ fun SearchBar(text: MutableState<String> , focusManager: FocusManager ,hideKeyBo
                 text.value = ""
             }
         )
-        if(hideKeyBoard.value){
-            focusManager.clearFocus()
-        }
     }
 }
