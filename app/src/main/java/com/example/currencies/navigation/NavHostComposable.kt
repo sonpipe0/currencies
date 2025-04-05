@@ -11,8 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.currencies.search.page.SearchPage
-import com.example.currencies.swap.SwapPage
+import com.example.currencies.pages.SearchPage
+import com.example.currencies.pages.SwapPage
 
 @Composable
 fun NavHostComposable(hideKeyboard: MutableState<Boolean> ,innerPadding: PaddingValues, navController: NavHostController) {

@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -36,7 +38,7 @@ fun RatesComponent(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
             .verticalScroll(rememberScrollState())
-            .background(Color(0x40FFE0B2))
+            .background(MaterialTheme.colorScheme.secondaryContainer)
             .padding(horizontal = 16.dp)
         ,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -64,14 +66,14 @@ fun RatesComponent(
                     Text(
                         text = it.first,
                         fontSize = 16.sp,
-                        color = Color.Black,
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
                         fontWeight = FontWeight.SemiBold,
                     )
                 }
                 Text(
                     text = "1.00 $baseCoin",
                     fontSize = 16.sp,
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
             }
         }

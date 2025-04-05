@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
@@ -66,9 +67,9 @@ fun TabView(tabBarItems: List<TabBarItem>, onNavigate: (String) -> Unit) {
     }
 
     NavigationBar (
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.surfaceContainer,
         modifier = Modifier.dropShadow(
-            color = Color.Black.copy(0.25f),
+            color = MaterialTheme.colorScheme.scrim.copy(0.5f),
             offsetX = 0.dp,
             offsetY = 2.dp,
             blur = 8.dp,
@@ -79,13 +80,13 @@ fun TabView(tabBarItems: List<TabBarItem>, onNavigate: (String) -> Unit) {
             NavigationBarItem(
                 modifier = Modifier.width(100.dp),
                 colors = NavigationBarItemColors(
-                    Color.Black,
-                    Color.Black,
-                    Color(0xFFFFE0B2),
-                    Color.Black,
-                    Color.Black,
-                    Color.Black,
-                    Color.Black,
+                    MaterialTheme.colorScheme.onSurface,
+                    MaterialTheme.colorScheme.onSurface,
+                    MaterialTheme.colorScheme.secondaryContainer,
+                    MaterialTheme.colorScheme.onSurface,
+                    MaterialTheme.colorScheme.onSurface,
+                    MaterialTheme.colorScheme.onSurface,
+                    MaterialTheme.colorScheme.onSurface,
                 ),
                 selected = selectedTabIndex == index,
                 onClick = {

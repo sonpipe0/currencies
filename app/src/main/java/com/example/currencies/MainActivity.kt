@@ -8,15 +8,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.rememberNavController
+import com.example.compose.CurrenciesTheme
 import com.example.currencies.navigation.BottomNavigationBar
 import com.example.currencies.navigation.NavHostComposable
-import com.example.currencies.ui.theme.CurrenciesTheme
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     },
-                    containerColor = Color(0xffEDEDED)
+                    containerColor = MaterialTheme.colorScheme.background,
                 ) { innerPadding ->
                     NavHostComposable(hideKeyBoard, innerPadding, navController)
                 }

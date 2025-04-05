@@ -1,4 +1,4 @@
-package com.example.currencies.search.page
+package com.example.currencies.pages
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

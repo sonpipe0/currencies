@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -67,11 +68,10 @@ fun SwapInputSelector(
             .height(72.dp)
             .border(
                 width = 1.dp,
-                color = Color.Gray.copy(0.75f),
+                color = MaterialTheme.colorScheme.primary,
                 shape = RoundedCornerShape(8.dp)
             )
             .clip(shape = RoundedCornerShape(8.dp))
-            .background(color = Color.White)
     ) {
         InputMenu(
             modifier = Modifier
@@ -105,7 +105,7 @@ fun SwapInputSelector(
                 keyboardType = KeyboardType.Number,
             ),
             textStyle = TextStyle(
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 30.sp,
                 textAlign = TextAlign.End
@@ -150,7 +150,7 @@ fun InputMenu(modifier: Modifier, code: MutableState<String>) {
         Text(
             text = code.value,
             style = TextStyle(
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.SemiBold,
                 fontSize = 20.sp,
             ),

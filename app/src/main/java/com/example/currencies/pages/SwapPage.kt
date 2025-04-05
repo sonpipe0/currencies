@@ -1,4 +1,4 @@
-package com.example.currencies.swap
+package com.example.currencies.pages
 
 import RatesComponent
 import androidx.compose.animation.core.animateFloatAsState
@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SyncAlt
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -37,6 +38,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.currencies.swap.SwapInputSelector
 import dropShadow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -58,7 +60,6 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
 
     Column(
         modifier = Modifier
-            .background(Color.White)
             .padding(top = 64.dp, bottom = 16.dp, start = 32.dp, end = 32.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
@@ -68,7 +69,7 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
             text = "Swap",
             fontSize = 32.sp,
             fontWeight = FontWeight.SemiBold,
-            color = Color.Black,
+            color = MaterialTheme.colorScheme.onBackground,
         )
         Box(
             contentAlignment = Alignment.CenterEnd,
@@ -101,12 +102,13 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
                     )
                     .rotate(animatedRotationAngle)
                     .clip(CircleShape)
-                    .background(color = Color.White)
+                    .background(color = MaterialTheme.colorScheme.tertiaryContainer)
                     .padding(8.dp),
             ) {
                 Icon(
                     imageVector = Icons.Outlined.SyncAlt,
                     contentDescription = "Swap Icon",
+                    tint = MaterialTheme.colorScheme.onTertiaryContainer,
                     modifier = Modifier
                         .size(24.dp)
                         .clickable(

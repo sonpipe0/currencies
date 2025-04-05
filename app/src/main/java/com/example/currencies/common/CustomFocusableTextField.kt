@@ -3,6 +3,7 @@ package com.example.currencies.common
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -36,6 +37,8 @@ fun CustomFocusableTextField(
     onValueChange: (String) -> Unit,
     enabled: Boolean,
     textStyle: TextStyle,
+    placeholder: String = "",
+    placeholderStyle: TextStyle = TextStyle.Default,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     modifier: Modifier,
@@ -69,6 +72,12 @@ fun CustomFocusableTextField(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         singleLine = true,
+        decorationBox = { innerTextField ->
+            if (value.isEmpty()) {
+                Text(text = placeholder, style = placeholderStyle)
+            }
+            innerTextField()
+        }
     );
 }
 

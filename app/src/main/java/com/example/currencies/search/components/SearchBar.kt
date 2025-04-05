@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -33,15 +34,15 @@ import dropShadow
 
 @Composable
 fun SearchBar(text: MutableState<String> , focusManager: FocusManager ,hideKeyBoard: MutableState<Boolean> = remember { mutableStateOf(false) }) {
+    val style : TextStyle = TextStyle(
+                color = MaterialTheme.colorScheme.onSurface,
+                fontSize = 20.sp
+            )
     Row(
        modifier = Modifier.fillMaxWidth()
-           .dropShadow(
-               shape = RoundedCornerShape(32.dp),
-               color = Color.Black.copy(0.10f),
-               blur = 4.dp,
-           )
+           .padding(horizontal = 16.dp)
            .clip(RoundedCornerShape(32.dp))
-           .background(color = Color.White)
+           .background(color = MaterialTheme.colorScheme.surfaceContainerHigh)
            .padding(vertical = 8.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -54,16 +55,15 @@ fun SearchBar(text: MutableState<String> , focusManager: FocusManager ,hideKeyBo
                 }
             },
             modifier = Modifier.weight(1f),
-            textStyle = TextStyle(
-                color = Color.Black,
-                fontSize = 20.sp
-            ),
+            textStyle = style,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = {
                 focusManager.clearFocus()
                 hideKeyBoard.value = true
                 text.value = ""
             }),
+            placeholder = "Search for a currency",
+            placeholderStyle = style,
             focusManager = focusManager,
             hideKeyBoard = hideKeyBoard,
             enabled = true,
@@ -71,7 +71,7 @@ fun SearchBar(text: MutableState<String> , focusManager: FocusManager ,hideKeyBo
         Icon(
             imageVector = Icons.Outlined.Search,
             contentDescription = "Search",
-            tint = Color.Black,
+            tint = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.clickable (
             ){
                 focusManager.clearFocus()

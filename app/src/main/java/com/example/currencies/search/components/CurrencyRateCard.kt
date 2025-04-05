@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,14 +26,15 @@ import java.util.Locale
 @Composable
 fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD", last: Boolean = false) {
     val positive: Boolean = currencyRate.dailyChangePercentage > 0
+    val onPrimaryContainerColor: Color = MaterialTheme.colorScheme.onSurface
     return Row (
         modifier = Modifier
-            .fillMaxWidth().background(Color.White)
+            .fillMaxWidth().background(MaterialTheme.colorScheme.surfaceContainerLow)
             .then(
                 if (!last) Modifier.drawBehind {
                     val borderSize = 0.5.dp
                     drawLine(
-                        color = Color.Black,
+                        color = onPrimaryContainerColor,
                         start = Offset(0f, size.height),
                         end = Offset(size.width, size.height)
                     )
@@ -49,11 +51,17 @@ fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD
         ){
             Text(currencyRate.code,
                 style = TextStyle(
+                    fontWeight = FontWeight.SemiBold,
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontSize = 16.sp,
                 )
             )
             Text(currencyRate.name,
-                style = TextStyle(fontSize = 10.sp)
+                style = TextStyle(
+                    fontSize = 10.sp,
+                    fontWeight = FontWeight.Light,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
             )
         }
         Column (
@@ -64,10 +72,12 @@ fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD
             Text("${currencyRate.value} $baseCurrencyCode",
                 style = TextStyle(
                     fontSize = 16.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.onSurface,
                 ))
             Text("${if(positive )"+" else "-"} ${String.format(Locale.getDefault(), "%.2f", currencyRate.dailyChangePercentage * 100).substring(1)} %",
                 style = TextStyle(
-                    color = if (positive) Color(0xff2FD905) else Color.Red,
+                    color = if (positive) Color(0xff2FD905) else MaterialTheme.colorScheme.error,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 ))
