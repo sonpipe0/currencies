@@ -21,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -38,6 +39,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.currencies.requests.ExchangeRates
 import com.example.currencies.swap.SwapInputSelector
 import dropShadow
 import kotlinx.coroutines.delay
@@ -56,7 +58,13 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
             durationMillis = 1000,
         )
     )
+    val codes: MutableState<Map<String, Pair<String, Int>>> = remember { mutableStateOf(emptyMap()) }
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(Unit) {
+        val fetchedCodes = ExchangeRates.getCurrencyCodes()
+        codes.value = fetchedCodes
+    }
 
     Column(
         modifier = Modifier
@@ -81,8 +89,8 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
             ) {
-                SwapInputSelector(true, numberInput, codeInput, focusManager, hideKeyBoard)
-                SwapInputSelector(false, numberOutput, codeOutput, focusManager, hideKeyBoard)
+                SwapInputSelector(true, numberInput, codeInput, codes.value,focusManager, hideKeyBoard)
+                SwapInputSelector(false, numberOutput, codeOutput,codes.value ,focusManager, hideKeyBoard)
             }
             Box(
                 modifier = Modifier

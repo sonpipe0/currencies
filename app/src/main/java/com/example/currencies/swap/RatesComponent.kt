@@ -21,19 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.currencies.utils.CurrencyMapper
+import com.example.currencies.R
 
 
 @Composable
 fun RatesComponent(
     baseCoin: String
 ) {
-    val currencyMapper = CurrencyMapper();
-    val currencies = currencyMapper.getContinents().flatMap { it ->
-        currencyMapper.getCodesAndFlagsForContinent(it).take(2).filter {
-            it.first != baseCoin
-        }
-    }
     Column(
         modifier = Modifier
             .clip(RoundedCornerShape(8.dp))
@@ -44,7 +38,6 @@ fun RatesComponent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
     ) {
-        currencies.map {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -58,13 +51,13 @@ fun RatesComponent(
                     verticalAlignment = Alignment.CenterVertically
                 ){
                     Image(
-                        painter = painterResource(id = it.second),
+                        painter = painterResource(id = R.drawable.us),
                         contentDescription = null,
                         modifier = Modifier
                             .size(32.dp)
                     )
                     Text(
-                        text = it.first,
+                        text = "USD",
                         fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         fontWeight = FontWeight.SemiBold,
@@ -76,7 +69,6 @@ fun RatesComponent(
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
             }
-        }
 
     }
 }
