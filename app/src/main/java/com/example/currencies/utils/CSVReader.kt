@@ -19,7 +19,6 @@ object CSVReader {
 
         reader.use { br ->
             var line: String?
-            // Skip the header line
             br.readLine()
             while (br.readLine().also { line = it } != null) {
                 val row = line!!.split(",").map { it.trim() }

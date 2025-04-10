@@ -1,6 +1,5 @@
 package com.example.currencies
 
-import com.example.currencies.requests.ExchangeRates
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -21,6 +20,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.compose.CurrenciesTheme
 import com.example.currencies.navigation.BottomNavigationBar
 import com.example.currencies.navigation.NavHostComposable
+import com.example.currencies.requests.mockCurrencyCodes
 import com.example.currencies.utils.CSVReader
 
 class MainActivity : ComponentActivity() {
@@ -34,7 +34,9 @@ class MainActivity : ComponentActivity() {
             CSVReader.readCSV(this, "country_codes.csv")
             val context = LocalContext.current
             LaunchedEffect(Unit) {
-                    ExchangeRates.requestCurrencyCodes(context)
+                val mocked = mockCurrencyCodes(context)
+                println(mocked)
+                val mocked2 = mockCurrencyCodes(context)
             }
             CurrenciesTheme {
                 Scaffold(

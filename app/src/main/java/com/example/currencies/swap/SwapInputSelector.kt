@@ -48,7 +48,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.currencies.R
 import com.example.currencies.common.CustomFocusableTextField
-import com.example.currencies.requests.ExchangeRates
 import kotlinx.coroutines.launch
 
 
@@ -58,7 +57,6 @@ fun SwapInputSelector(
     enabled: Boolean,
     value: MutableState<String>,
     code: MutableState<String>,
-    data: Map<String, Pair<String, Int>>,
     focusManager: FocusManager,
     hideKeyBoard: MutableState<Boolean>
 ) {
@@ -82,7 +80,6 @@ fun SwapInputSelector(
                 .weight(1f)
                 .align(Alignment.CenterVertically),
             code = code,
-            data = data,
         )
         CustomFocusableTextField(
             value = if (!enabled && value.value == "") {
@@ -121,7 +118,7 @@ fun SwapInputSelector(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InputMenu(modifier: Modifier, code: MutableState<String>, data: Map<String, Pair<String, Int>>) {
+fun InputMenu(modifier: Modifier, code: MutableState<String>) {
     var expanded by remember { mutableStateOf(false) }
     var showBottomSheet by remember { mutableStateOf(false) }
     val bottomSheet = rememberModalBottomSheetState(
@@ -144,7 +141,7 @@ fun InputMenu(modifier: Modifier, code: MutableState<String>, data: Map<String, 
         modifier = modifier,
     ) {
         Image(
-            painter = painterResource(id = data[code.value]?.second ?: R.drawable.ic_launcher_background),
+            painter = painterResource(id = R.drawable.ic_launcher_background),
             contentDescription = code.value,
             modifier = Modifier.padding(16.dp),
             colorFilter = if (code.value == "XAF" || code.value == "XCD") {
@@ -192,33 +189,6 @@ fun InputMenu(modifier: Modifier, code: MutableState<String>, data: Map<String, 
                     .verticalScroll(rememberScrollState())
                     .padding(16.dp)
             ) {
-                data.filter { x -> x.value.second != 0 }.forEach { (currencyCode, pair) ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable {
-                                scope.launch { closeSheet(currencyCode) }
-                            }
-                            .padding(8.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Image(
-                            painter = painterResource(id = pair.second ?: R.drawable.ic_launcher_background),
-                            contentDescription = currencyCode,
-                            modifier = Modifier.size(24.dp),
-                            colorFilter = if (currencyCode == "XAF" || currencyCode == "XCD") {
-                                androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
-                            } else {
-                                null
-                            }
-                        )
-                        Text(
-                            text = "${pair.first} ($currencyCode)",
-                            modifier = Modifier.padding(start = 8.dp),
-                            style = TextStyle(fontSize = 16.sp)
-                        )
-                    }
-                }
                 }
         }
     }

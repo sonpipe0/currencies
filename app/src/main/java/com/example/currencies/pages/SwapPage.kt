@@ -35,11 +35,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.currencies.requests.ExchangeRates
+import com.example.currencies.requests.mockCurrencyCodes
 import com.example.currencies.swap.SwapInputSelector
 import dropShadow
 import kotlinx.coroutines.delay
@@ -58,14 +59,10 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
             durationMillis = 1000,
         )
     )
-    val codes: MutableState<Map<String, Pair<String, Int>>> = remember { mutableStateOf(emptyMap()) }
     val scope = rememberCoroutineScope()
+    val mock = mockCurrencyCodes(LocalContext.current)
 
-    LaunchedEffect(Unit) {
-        val fetchedCodes = ExchangeRates.getCurrencyCodes()
-        codes.value = fetchedCodes
-    }
-
+    val context  = LocalContext.current
     Column(
         modifier = Modifier
             .padding(top = 64.dp, bottom = 16.dp, start = 32.dp, end = 32.dp),
@@ -89,8 +86,8 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
             ) {
-                SwapInputSelector(true, numberInput, codeInput, codes.value,focusManager, hideKeyBoard)
-                SwapInputSelector(false, numberOutput, codeOutput,codes.value ,focusManager, hideKeyBoard)
+                SwapInputSelector(true, numberInput, codeInput, focusManager, hideKeyBoard)
+                SwapInputSelector(false, numberOutput, codeOutput,focusManager, hideKeyBoard)
             }
             Box(
                 modifier = Modifier
