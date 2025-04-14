@@ -80,6 +80,8 @@ class MockCurrencyRateSearcher: CurrencyRateSearcher {
                 dailyChangePercentage = -0.3,
                 dailyChangeValue = -0.294
             )
-        )
+        ).filter {
+            it.name.contains(prefix, ignoreCase = true) || it.code.contains(prefix, ignoreCase = true)
+        }
     }
 }

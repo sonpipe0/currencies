@@ -5,6 +5,11 @@ enum class FilterType {
     CURRENCY,
 }
 
+enum class CurrencyMode {
+    MORE_THAN,
+    LESS_THAN,
+}
+
 
 data class Filter(
     val type: FilterType,
@@ -16,7 +21,7 @@ data class Filter(
                 "Invalid continent value: $value"
             }
         } else if(type == FilterType.CURRENCY) {
-            require(value.length <= 3) {
+            require(value.toIntOrNull() != null) {
                 "Invalid currency value: $value"
             }
         }

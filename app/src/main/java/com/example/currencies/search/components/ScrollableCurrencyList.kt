@@ -32,14 +32,14 @@ fun ScrollableCurrencyList(prefix: MutableState<String>, currencyRateSearcher: C
     val isLoading = remember { mutableStateOf(false) }
     var searchJob: Job? by remember { mutableStateOf(null) }
     val coroutineScope = rememberCoroutineScope()
-
+    // we are going to have to use a view model to store our favorites ...
     LaunchedEffect(prefix.value) {
         searchJob?.cancel()
         searchJob = coroutineScope.launch {
             delay(300) // Debounce time
             println("Searching")
             isLoading.value = true
-            currencyRates.value = currencyRateSearcher.searchCurrencyRateByPrefix(prefix.value, "USD").take(3)
+            currencyRates.value = currencyRateSearcher.searchCurrencyRateByPrefix(prefix.value, "USD")
             isLoading.value = false
         }
     }
@@ -64,7 +64,8 @@ fun ScrollableCurrencyList(prefix: MutableState<String>, currencyRateSearcher: C
                 currencyRates.value.forEachIndexed { index, currencyRate ->
                     CurrencyRateCard(
                         currencyRate = currencyRate,
-                        last = index == currencyRates.value.size - 1
+                        last = index == currencyRates.value.size - 1,
+                        onFavorite = {},
                     )
                 }
             }

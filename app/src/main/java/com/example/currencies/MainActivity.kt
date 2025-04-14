@@ -35,8 +35,6 @@ class MainActivity : ComponentActivity() {
             val context = LocalContext.current
             LaunchedEffect(Unit) {
                 val mocked = mockCurrencyCodes(context)
-                println(mocked)
-                val mocked2 = mockCurrencyCodes(context)
             }
             CurrenciesTheme {
                 Scaffold(

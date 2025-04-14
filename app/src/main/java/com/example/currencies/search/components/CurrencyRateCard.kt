@@ -1,6 +1,7 @@
 package com.example.currencies.search.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +9,12 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.StarOutline
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -24,12 +31,13 @@ import com.example.currencies.search.types.CurrencyRate
 import java.util.Locale
 
 @Composable
-fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD", last: Boolean = false) {
+fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD",onFavorite: () -> Unit, isFavorite: Boolean = false ,last: Boolean = false) {
     val positive: Boolean = currencyRate.dailyChangePercentage > 0
     val onPrimaryContainerColor: Color = MaterialTheme.colorScheme.onSurface
     return Row (
         modifier = Modifier
-            .fillMaxWidth().background(MaterialTheme.colorScheme.surfaceContainerLow)
+            .fillMaxWidth()
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .then(
                 if (!last) Modifier.drawBehind {
                     val borderSize = 0.5.dp
@@ -39,33 +47,52 @@ fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD
                         end = Offset(size.width, size.height)
                     )
                 } else Modifier
-            ).
-            height(68.dp).padding(
+            )
+            .height(68.dp)
+            .padding(
                 10.dp
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Column (
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+        Row (
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
         ){
-            Text(currencyRate.code,
-                style = TextStyle(
-                    fontWeight = FontWeight.SemiBold,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 16.sp,
-                )
+            Icon(
+                modifier = Modifier
+                    .clickable { onFavorite() },
+                imageVector = if (isFavorite) Icons.Default.Star else Icons.Default.StarOutline,
+                contentDescription = "Star",
+                tint = MaterialTheme.colorScheme.onSurface
             )
-            Text(currencyRate.name,
-                style = TextStyle(
-                    fontSize = 10.sp,
-                    fontWeight = FontWeight.Light,
-                    color = MaterialTheme.colorScheme.onSurface,
+            Column(
+                modifier = Modifier.width(128.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp)
+            ) {
+                Text(
+                    currencyRate.code,
+                    style = TextStyle(
+                        fontWeight = FontWeight.SemiBold,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontSize = 16.sp,
+                    )
                 )
-            )
+                Text(
+                    currencyRate.name,
+                    style = TextStyle(
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Light,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                )
+            }
         }
         Column (
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier.fillMaxHeight().weight(1f),
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.SpaceBetween
         ){

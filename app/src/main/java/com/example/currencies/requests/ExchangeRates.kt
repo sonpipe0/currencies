@@ -1,6 +1,7 @@
 package com.example.currencies.requests
 
 import android.content.Context
+import com.example.currencies.CurrenciesApplication
 import com.example.currencies.utils.CSVReader
 
 
@@ -180,7 +181,7 @@ fun mockCurrencyCodes(context: Context): Map<String, Pair<String, Int>> {
         val codeKey = code.key
         if (csvData.containsKey(codeKey)) {
             val country = csvData[codeKey] ?: continue
-            val codeImage = context.resources.getIdentifier(
+            val codeImage = CurrenciesApplication.getResources().getIdentifier(
                 country.lowercase(),
                 "drawable",
                 "com.example.currencies",
