@@ -39,7 +39,6 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.currencies.requests.mockCurrencyCodes
 import com.example.currencies.swap.SwapInputSelector
 import dropShadow
 import kotlinx.coroutines.delay
@@ -59,7 +58,6 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
         )
     )
     val scope = rememberCoroutineScope()
-    val mock = mockCurrencyCodes(LocalContext.current)
 
     val context  = LocalContext.current
     Column(

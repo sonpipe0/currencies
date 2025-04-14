@@ -7,7 +7,15 @@ enum class FilterType {
 
 enum class CurrencyMode {
     MORE_THAN,
-    LESS_THAN,
+    LESS_THAN;
+
+
+    override fun toString(): String {
+        return when (this) {
+            MORE_THAN -> "+"
+            LESS_THAN -> "-"
+        }
+    }
 }
 
 
@@ -17,7 +25,7 @@ data class Filter(
 ){
     init {
         if(type == FilterType.CONTINENT) {
-            require(value in listOf("Africa", "Asia", "East Europe", "West Europe","America", "Oceania", "America")) {
+            require(value in listOf("Africa", "Asia", "Eastern Europe", "Western Europe","America", "Oceania", "America")) {
                 "Invalid continent value: $value"
             }
         } else if(type == FilterType.CURRENCY) {

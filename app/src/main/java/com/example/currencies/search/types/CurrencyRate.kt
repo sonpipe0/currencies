@@ -5,6 +5,7 @@ data class CurrencyRate(
     val code: String,
     val value: Double,
     val dailyChangePercentage: Double,
-    val dailyChangeValue: Double
+    val dailyChangeValue: Double,
+    val continent: String = "Unknown"
 )
 

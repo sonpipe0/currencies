@@ -35,6 +35,7 @@ import com.example.currencies.search.components.SearchBar
 import com.example.currencies.search.hooks.CurrencyRateSearcher
 import com.example.currencies.search.hooks.MockCurrencyRateSearcher
 import com.example.currencies.search_filter.ActionFilter
+import com.example.currencies.search_filter.FilterType
 import com.example.currencies.viewmodels.SelectedFilterViewModels
 
 
@@ -63,13 +64,22 @@ fun SearchPage(hideKeyBoard: MutableState<Boolean>) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 OpenFiltersButton { isExpanded.value = true }
-                ActionFilter(
-                    onClick = {
-                    },
-                    label = { Text("Western Europe") },
-                    selected = true,
-                    enabled = true
-                )
+                filters.sortedBy { it.type }.forEach() { filter ->
+                    ActionFilter(
+                        onClick = {
+                            filterViewModel.removeFilter(filter)
+                        },
+                        label = { Text(
+                            if (filter.type == FilterType.CURRENCY) {
+                                "${filter.value} $currencyMode"
+                            } else {
+                                filter.value
+                            }
+                        ) },
+                        selected = true,
+                        enabled = true
+                    )
+                }
             }
         }
         ScrollableCurrencyList(text, currencyRateSearcher)

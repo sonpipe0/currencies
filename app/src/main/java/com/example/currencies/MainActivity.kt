@@ -16,14 +16,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.CurrenciesTheme
 import com.example.currencies.navigation.BottomNavigationBar
 import com.example.currencies.navigation.NavHostComposable
-import com.example.currencies.requests.mockCurrencyCodes
-import com.example.currencies.utils.CSVReader
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : ComponentActivity() {
+
+@AndroidEntryPoint
+class MainActivity : FragmentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,11 +33,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val hideKeyBoard = remember { mutableStateOf(false) }
             val navController = rememberNavController()
-            CSVReader.readCSV(this, "country_codes.csv")
             val context = LocalContext.current
-            LaunchedEffect(Unit) {
-                val mocked = mockCurrencyCodes(context)
-            }
             CurrenciesTheme {
                 Scaffold(
                     modifier = Modifier

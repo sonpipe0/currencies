@@ -1,14 +1,19 @@
 package com.example.currencies.search.components
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -39,6 +44,13 @@ fun FilterModalBottomSheet(
     val filterViewModel = hiltViewModel<SelectedFilterViewModels>()
     val filters by filterViewModel.filters.collectAsState()
     val currencyMode by filterViewModel.currencyMode.collectAsState()
+    val onFilterClick: (Filter) -> Unit = { filter ->
+        if (filters.any { it == filter }) {
+            filterViewModel.removeFilter(filter)
+        } else {
+            filterViewModel.addFilter(filter)
+        }
+    }
     if (isExpanded) {
         ModalBottomSheet(
             onDismissRequest = { onDismissRequest() },
@@ -66,40 +78,45 @@ fun FilterModalBottomSheet(
                     val secondHalf = continents.subList(mid, continents.size)
                     FilterRow(filters, firstHalf) {continent ->
                         val filter = Filter(FilterType.CONTINENT, continent)
-                        filterViewModel.addFilter(filter)
+                        onFilterClick(filter)
                     }
                     FilterRow(filters, secondHalf) {continent ->
                         val filter = Filter(FilterType.CONTINENT, continent)
-                        filterViewModel.addFilter(filter)
+                        onFilterClick(filter)
                     }
                     HorizontalDivider(
                         modifier = Modifier.padding(vertical = 8.dp),
                         color = MaterialTheme.colorScheme.onSurface.copy(0.12f)
                     )
                     Text("Mkt Value", style = MaterialTheme.typography.titleMedium)
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 32.dp)
+                    SingleChoiceSegmentedButtonRow(
+                        modifier = Modifier.padding(horizontal = 32.dp).fillMaxWidth()
                     ) {
-                        ActionFilter(
-                            label = { Text("More Than") },
+                        SegmentedButton(
+                            selected = currencyMode == CurrencyMode.MORE_THAN,
                             onClick = {
                                 filterViewModel.changeCurrencyMode(CurrencyMode.MORE_THAN)
                             },
-                            selected = currencyMode == CurrencyMode.MORE_THAN,
-                            enabled = true
-                        )
-                        ActionFilter(
-                            label = { Text("Less Than") },
+                            shape = SegmentedButtonDefaults.itemShape(
+                                index = 0,
+                                count = 2,
+                            ),
+                        ) {
+                            Text("More than")
+                        }
+                        SegmentedButton(
+                            selected = currencyMode == CurrencyMode.LESS_THAN,
                             onClick = {
                                 filterViewModel.changeCurrencyMode(CurrencyMode.LESS_THAN)
                             },
-                            selected = currencyMode == CurrencyMode.LESS_THAN,
-                            enabled = true
-                        )
+                            shape = SegmentedButtonDefaults.itemShape(
+                                index = 1,
+                                count = 2,
+                            ),
+                        ) {
+                            Text("Less than")
+                        }
+
                     }
 
                     val acceptedValues: List<String> = listOf(50, 100, 200, 500, 1000).map { it.toString() }
@@ -123,7 +140,7 @@ private fun FilterRow(selectedFilters:List<Filter>, filters:List<String>, onClic
     Row(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())
     ) {
         for (filter in  filters) {
             ActionFilter(

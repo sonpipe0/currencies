@@ -2,10 +2,10 @@ package com.example.currencies.requests
 
 import android.content.Context
 import com.example.currencies.CurrenciesApplication
-import com.example.currencies.utils.CSVReader
+import com.example.currencies.utils.csvData
 
 
-    val codeMap: Map<String, String> = mapOf(
+val codeMap: Map<String, String> = mapOf(
         "AED" to "UAE Dirham",
         "AFN" to "Afghan Afghani",
         "ALL" to "Albanian Lek",
@@ -170,24 +170,29 @@ import com.example.currencies.utils.CSVReader
         "ZMW" to "Zambian Kwacha",
         "ZWL" to "Zimbabwean Dollar"
     )
-val currencyCodes: MutableMap<String, Pair<String, Int>> = mutableMapOf()
+val currencyCodes: Map<String, Triple<String, String, Int>> = mockCurrencyCodes()
 
-fun mockCurrencyCodes(context: Context): Map<String, Pair<String, Int>> {
+
+private fun mockCurrencyCodes(): Map<String, Triple<String, String, Int>> {
+    println("mockCurrencyCodes() called")
+    val currencyCodes: MutableMap<String, Triple<String, String, Int>> = mutableMapOf()
     if (currencyCodes.isNotEmpty()) {
         return currencyCodes
     }
-    val csvData: Map<String, String> = CSVReader.getData()
+    val csvData: Map<String, Pair<String, String>> = csvData
     for (code in codeMap) {
         val codeKey = code.key
         if (csvData.containsKey(codeKey)) {
-            val country = csvData[codeKey] ?: continue
+            val country = csvData[codeKey]?.first ?: continue
+            val continent = csvData[codeKey]?.second ?: continue
             val codeImage = CurrenciesApplication.getResources().getIdentifier(
                 country.lowercase(),
                 "drawable",
                 "com.example.currencies",
             )
-            currencyCodes[codeKey] = Pair(code.value, codeImage)
+            currencyCodes[codeKey] = Triple(continent, code.value, codeImage)
         }
     }
+
     return currencyCodes
 }
