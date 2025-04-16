@@ -44,7 +44,6 @@ fun ScrollableCurrencyList(prefix: MutableState<String>, currencyRateSearcher: C
     LaunchedEffect(prefix.value, filters, currencyMode) {
         searchJob?.cancel()
         searchJob = coroutineScope.launch {
-            delay(300) // Debounce time
             isLoading.value = true
             // perform in the IO thread because it takes time and we don't want to block the UI thread
             val results = withContext(Dispatchers.IO) {

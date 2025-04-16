@@ -194,5 +194,8 @@ private fun mockCurrencyCodes(): Map<String, Triple<String, String, Int>> {
         }
     }
 
-    return currencyCodes
+    println("mockCurrencyCodes() finished: ${currencyCodes} items")
+        return currencyCodes.entries
+                .sortedBy { it.value.first }
+                .associate { it.key to it.value }
 }

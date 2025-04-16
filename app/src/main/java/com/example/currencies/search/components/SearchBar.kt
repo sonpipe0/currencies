@@ -1,12 +1,14 @@
 package com.example.currencies.search.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -34,18 +36,35 @@ import dropShadow
 
 
 @Composable
-fun SearchBar(text: MutableState<String> , focusManager: FocusManager ,hideKeyBoard: MutableState<Boolean> = remember { mutableStateOf(false) }) {
-    val style : TextStyle = TextStyle(
-                color = MaterialTheme.colorScheme.onSurface,
-                fontSize = 20.sp
-            )
+fun SearchBar(
+    text: MutableState<String>,
+    focusManager: FocusManager,
+    isOutlined: Boolean = false,
+    isRounded: Boolean = true,
+    hideKeyBoard: MutableState<Boolean> = remember { mutableStateOf(false) }
+) {
+    val style: TextStyle = TextStyle(
+        color = MaterialTheme.colorScheme.onSurface,
+        fontSize = 20.sp
+    )
     Row(
-       modifier = Modifier.fillMaxWidth()
-           .height(56.dp)
-           .padding(horizontal = 16.dp)
-           .clip(RoundedCornerShape(32.dp))
-           .background(color = MaterialTheme.colorScheme.surfaceContainerHigh)
-           .padding(vertical = 8.dp, horizontal = 16.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)
+            .padding(horizontal = 16.dp)
+            .then(if (isRounded) Modifier.clip(RoundedCornerShape(32.dp)) else Modifier.clip(
+                RoundedCornerShape(4.dp)
+            ))
+            .then(
+                if (isOutlined) Modifier.background(Color.Transparent).border(
+                    1.dp,
+                    MaterialTheme.colorScheme.primary,
+                    RoundedCornerShape(32.dp)
+                ) else Modifier.background(
+                    MaterialTheme.colorScheme.surfaceContainerHigh,
+                )
+            )
+            .padding(vertical = 8.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -74,8 +93,8 @@ fun SearchBar(text: MutableState<String> , focusManager: FocusManager ,hideKeyBo
             imageVector = Icons.Outlined.Search,
             contentDescription = "Search",
             tint = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.clickable (
-            ){
+            modifier = Modifier.clickable(
+            ) {
                 focusManager.clearFocus()
                 hideKeyBoard.value = true
                 text.value = ""

@@ -2,6 +2,7 @@ package com.example.currencies.swap
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -17,6 +19,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,6 +47,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.currencies.R
 import com.example.currencies.common.CustomFocusableTextField
+import com.example.currencies.requests.currencyCodes
+import com.example.currencies.search.components.SearchBar
 import kotlinx.coroutines.launch
 
 
@@ -76,6 +81,8 @@ fun SwapInputSelector(
                 .weight(1f)
                 .align(Alignment.CenterVertically),
             code = code,
+            focusManager = focusManager,
+            hideKeyBoard = hideKeyBoard
         )
         CustomFocusableTextField(
             value = if (!enabled && value.value == "") {
@@ -114,9 +121,15 @@ fun SwapInputSelector(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InputMenu(modifier: Modifier, code: MutableState<String>) {
+fun InputMenu(
+    modifier: Modifier,
+    code: MutableState<String>,
+    focusManager: FocusManager,
+    hideKeyBoard: MutableState<Boolean>
+) {
     var expanded by remember { mutableStateOf(false) }
     var showBottomSheet by remember { mutableStateOf(false) }
+    val searchInput = remember { mutableStateOf("") }
     val bottomSheet = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
     )
@@ -126,7 +139,8 @@ fun InputMenu(modifier: Modifier, code: MutableState<String>) {
             bottomSheet.hide()
         }.invokeOnCompletion {
             scope.launch {
-                code.value = selectedText // there's a bug if you set it before the hide with the bottomSheet animation
+                code.value =
+                    selectedText // there's a bug if you set it before the hide with the bottomSheet animation
                 showBottomSheet = false
             }
         }
@@ -137,7 +151,7 @@ fun InputMenu(modifier: Modifier, code: MutableState<String>) {
         modifier = modifier,
     ) {
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
+            painter = painterResource(id = currencyCodes[code.value]?.third ?: R.drawable.ic_launcher_background),
             contentDescription = code.value,
             modifier = Modifier.padding(16.dp),
             colorFilter = if (code.value == "XAF" || code.value == "XCD") {
@@ -179,13 +193,100 @@ fun InputMenu(modifier: Modifier, code: MutableState<String>) {
             modifier = Modifier.fillMaxSize(),
             sheetState = bottomSheet,
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(16.dp)
-            ) {
+            Column {
+                Column(
+                    modifier = Modifier.padding(vertical = 16.dp)
+                ) {
+                    SearchBar(
+                        text = searchInput,
+                        focusManager = focusManager,
+                        isOutlined = true,
+                        isRounded = false,
+                        hideKeyBoard = hideKeyBoard
+                    )
                 }
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(16.dp)
+                ) {
+                    var currentContinent = ""
+                    currencyCodes.filter { it.value.third != 0 }.filter {
+                        it.key.lowercase()
+                            .startsWith(searchInput.value) || it.value.second.lowercase()
+                            .startsWith(
+                                searchInput.value.lowercase()
+                            )
+                    }.forEach { currency ->
+                        if (currentContinent != currency.value.first) {
+                            Text(
+                                text = currency.value.first,
+                                style = TextStyle(
+                                    color = MaterialTheme.colorScheme.onBackground,
+                                    fontWeight = FontWeight.SemiBold,
+                                    fontSize = 20.sp,
+                                ),
+                            )
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = 8.dp),
+                                color = MaterialTheme.colorScheme.onSurface.copy(0.1f)
+                            )
+                            currentContinent = currency.value.first
+                        }
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(0.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable {
+                                    closeSheet(currency.key)
+                                }
+                        ) {
+                            Image(
+                                painter = painterResource(
+                                    id = currency.value.third ?: R.drawable.ic_launcher_background
+                                ),
+                                contentDescription = currency.value.second,
+                                modifier = Modifier.size(24.dp),
+                                colorFilter = if (currency.key == "XAF" || currency.key == "XCD") {
+                                    androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
+                                } else {
+                                    null
+                                }
+                            )
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(
+                                    8.dp,
+                                    Alignment.CenterVertically
+                                ),
+                                modifier = Modifier
+                                    .padding(start = 16.dp)
+                                    .fillMaxWidth()
+                            ) {
+                                Text(
+                                    text = currency.key,
+                                    style = TextStyle(
+                                        color = MaterialTheme.colorScheme.onBackground,
+                                        fontWeight = FontWeight.Normal,
+                                        fontSize = 20.sp,
+                                    ),
+                                )
+                                Text(
+                                    text = currency.value.second,
+                                    style = TextStyle(
+                                        color = MaterialTheme.colorScheme.onBackground,
+                                        fontWeight = FontWeight.Thin,
+                                        fontSize = 12.sp,
+                                    ),
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

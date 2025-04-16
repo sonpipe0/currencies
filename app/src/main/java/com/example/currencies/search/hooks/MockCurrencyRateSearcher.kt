@@ -14,7 +14,6 @@ class MockCurrencyRateSearcher: CurrencyRateSearcher {
         selectedMode: CurrencyMode,
         baseCurrencyCode: String
     ): List<CurrencyRate> {
-        delay(500);
         return currencyCodes.map {
             CurrencyRate(
                 code = it.key,
