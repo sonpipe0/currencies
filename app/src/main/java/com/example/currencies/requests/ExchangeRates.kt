@@ -1,6 +1,5 @@
 package com.example.currencies.requests
 
-import android.content.Context
 import com.example.currencies.CurrenciesApplication
 import com.example.currencies.utils.csvData
 
@@ -174,7 +173,6 @@ val currencyCodes: Map<String, Triple<String, String, Int>> = mockCurrencyCodes(
 
 
 private fun mockCurrencyCodes(): Map<String, Triple<String, String, Int>> {
-    println("mockCurrencyCodes() called")
     val currencyCodes: MutableMap<String, Triple<String, String, Int>> = mutableMapOf()
     if (currencyCodes.isNotEmpty()) {
         return currencyCodes
@@ -194,7 +192,6 @@ private fun mockCurrencyCodes(): Map<String, Triple<String, String, Int>> {
         }
     }
 
-    println("mockCurrencyCodes() finished: ${currencyCodes} items")
         return currencyCodes.entries
                 .sortedBy { it.value.first }
                 .associate { it.key to it.value }

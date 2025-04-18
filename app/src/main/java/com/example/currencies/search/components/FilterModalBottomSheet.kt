@@ -19,7 +19,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,8 +27,7 @@ import com.example.currencies.search_filter.ActionFilter
 import com.example.currencies.search_filter.CurrencyMode
 import com.example.currencies.search_filter.Filter
 import com.example.currencies.search_filter.FilterType
-import com.example.currencies.viewmodels.SelectedFilterViewModels
-import kotlinx.coroutines.launch
+import com.example.currencies.viewmodels.AllCurrenciesValuesViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,7 +39,7 @@ fun FilterModalBottomSheet(
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true,
     )
-    val filterViewModel = hiltViewModel<SelectedFilterViewModels>()
+    val filterViewModel = hiltViewModel<AllCurrenciesValuesViewModel>()
     val filters by filterViewModel.filters.collectAsState()
     val currencyMode by filterViewModel.currencyMode.collectAsState()
     val onFilterClick: (Filter) -> Unit = { filter ->

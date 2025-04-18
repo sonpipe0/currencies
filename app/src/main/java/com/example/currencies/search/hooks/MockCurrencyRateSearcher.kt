@@ -5,7 +5,6 @@ import com.example.currencies.search.types.CurrencyRate
 import com.example.currencies.search_filter.CurrencyMode
 import com.example.currencies.search_filter.Filter
 import com.example.currencies.search_filter.FilterType
-import kotlinx.coroutines.delay
 
 class MockCurrencyRateSearcher: CurrencyRateSearcher {
     override suspend fun searchCurrencyRateByPrefixAndFilters(

@@ -14,11 +14,9 @@ private fun readCSV(): Map<String, Pair<String, String>> {
         CurrenciesApplication.getResources().assets.open(fileName)
     } catch (e: Exception) {
         e.printStackTrace()
-        println("Error opening file: $fileName")
         return data
     }
     val reader = BufferedReader(InputStreamReader(inputStream))
-    println("reader started")
 
     reader.use { br ->
         var line: String?
@@ -37,6 +35,5 @@ private fun readCSV(): Map<String, Pair<String, String>> {
 }
 
 private fun getData(): Map<String, Pair<String, String>> {
-    println("getData() called")
     return readCSV()
 }

@@ -36,7 +36,7 @@ import com.example.currencies.search.hooks.CurrencyRateSearcher
 import com.example.currencies.search.hooks.MockCurrencyRateSearcher
 import com.example.currencies.search_filter.ActionFilter
 import com.example.currencies.search_filter.FilterType
-import com.example.currencies.viewmodels.SelectedFilterViewModels
+import com.example.currencies.viewmodels.AllCurrenciesValuesViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +45,7 @@ fun SearchPage(hideKeyBoard: MutableState<Boolean>) {
     val currencyRateSearcher: CurrencyRateSearcher = MockCurrencyRateSearcher();
     val text: MutableState<String> = remember { mutableStateOf("") }
     val isExpanded: MutableState<Boolean> = remember { mutableStateOf(false) }
-    val filterViewModel = hiltViewModel<SelectedFilterViewModels>()
+    val filterViewModel = hiltViewModel<AllCurrenciesValuesViewModel>()
     val filters by filterViewModel.filters.collectAsState()
     val currencyMode by filterViewModel.currencyMode.collectAsState()
     return Column(

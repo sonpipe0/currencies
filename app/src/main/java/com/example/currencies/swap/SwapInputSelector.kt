@@ -38,6 +38,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -81,7 +82,6 @@ fun SwapInputSelector(
                 .weight(1f)
                 .align(Alignment.CenterVertically),
             code = code,
-            focusManager = focusManager,
             hideKeyBoard = hideKeyBoard
         )
         CustomFocusableTextField(
@@ -124,7 +124,6 @@ fun SwapInputSelector(
 fun InputMenu(
     modifier: Modifier,
     code: MutableState<String>,
-    focusManager: FocusManager,
     hideKeyBoard: MutableState<Boolean>
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -194,6 +193,7 @@ fun InputMenu(
             sheetState = bottomSheet,
         ) {
             Column {
+                val focusManager: FocusManager = LocalFocusManager.current
                 Column(
                     modifier = Modifier.padding(vertical = 16.dp)
                 ) {

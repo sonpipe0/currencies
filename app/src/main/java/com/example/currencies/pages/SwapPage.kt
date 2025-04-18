@@ -1,6 +1,5 @@
 package com.example.currencies.pages
 
-import com.example.currencies.swap.RatesComponent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -39,6 +38,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.currencies.swap.RatesComponent
 import com.example.currencies.swap.SwapInputSelector
 import dropShadow
 import kotlinx.coroutines.delay
