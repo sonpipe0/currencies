@@ -38,6 +38,9 @@ import com.example.currencies.search.hooks.CurrencyRateSearcher
 import com.example.currencies.search.hooks.MockCurrencyRateSearcher
 import com.example.currencies.search_filter.ActionFilter
 import com.example.currencies.search_filter.FilterType
+import com.example.currencies.ui.theme.Icon
+import com.example.currencies.ui.theme.Padding
+import com.example.currencies.ui.theme.Radius
 import com.example.currencies.viewmodels.AllCurrenciesValuesViewModel
 
 
@@ -52,18 +55,18 @@ fun SearchPage(hideKeyBoard: MutableState<Boolean>) {
     val filters by filterViewModel.filters.collectAsState()
     val currencyMode by filterViewModel.currencyMode.collectAsState()
     return Column(
-        modifier = Modifier.padding(top = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        modifier = Modifier.padding(top = Padding.large),
+        verticalArrangement = Arrangement.spacedBy(Padding.medium),
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.padding(horizontal = Padding.small),
+            verticalArrangement = Arrangement.spacedBy(Padding.medium),
         ) {
             val focusManager: FocusManager = LocalFocusManager.current
             SearchBar(text = text, focusManager, hideKeyBoard = hideKeyBoard)
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                horizontalArrangement = Arrangement.spacedBy(Padding.medium),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 OpenFiltersButton { isExpanded.value = true }
@@ -102,18 +105,18 @@ fun OpenFiltersButton(onClick: () -> Unit) {
         content = {
             Icon(
                 imageVector = Icons.Default.FilterList,
-                modifier = Modifier.size(20.dp),
+                modifier = Modifier.size(Icon.small),
                 contentDescription = "Add",
                 tint = MaterialTheme.colorScheme.onSurface,
             )
         },
         modifier = Modifier
-            .clip(RoundedCornerShape(32.dp))
+            .clip(RoundedCornerShape(Radius.large))
             .background(color = MaterialTheme.colorScheme.surfaceContainerHigh)
             .clickable {
                 onClick()
             }
-            .padding(horizontal = 8.dp)
-            .padding(8.dp)
+            .padding(horizontal = Padding.small)
+            .padding(Padding.small)
     )
 }

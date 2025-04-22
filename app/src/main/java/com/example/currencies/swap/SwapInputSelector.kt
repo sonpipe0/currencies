@@ -52,6 +52,12 @@ import com.example.currencies.R
 import com.example.currencies.common.CustomFocusableTextField
 import com.example.currencies.requests.currencyCodes
 import com.example.currencies.search.components.SearchBar
+import com.example.currencies.ui.theme.Border
+import com.example.currencies.ui.theme.Box
+import com.example.currencies.ui.theme.Icon
+import com.example.currencies.ui.theme.Padding
+import com.example.currencies.ui.theme.Radius
+import com.example.currencies.ui.theme.zero
 import kotlinx.coroutines.launch
 
 
@@ -77,22 +83,22 @@ fun SwapInputSelector(
         }
     }
     return Row(
-        horizontalArrangement = Arrangement.spacedBy(0.dp),
+        horizontalArrangement = Arrangement.spacedBy(zero),
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .height(72.dp)
+            .height(Box.Height.extraLarge)
             .border(
-                width = 1.dp,
+                width = Border.medium,
                 color = MaterialTheme.colorScheme.primary,
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(Radius.small)
             )
-            .clip(shape = RoundedCornerShape(8.dp))
+            .clip(shape = RoundedCornerShape(Radius.small))
             .then(if (!enabled) Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh) else Modifier)
     ) {
         InputMenu(
             modifier = Modifier
-                .padding(end = 16.dp)
+                .padding(end = Padding.large)
                 .fillMaxSize()
                 .weight(1f)
                 .align(Alignment.CenterVertically),
@@ -125,7 +131,7 @@ fun SwapInputSelector(
             enabled = enabled,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(end = 12.dp)
+                .padding(end = Padding.big)
                 .weight(0.5f)
                 .align(Alignment.CenterVertically),
             keyboardOptions = KeyboardOptions.Default.copy(
@@ -173,14 +179,14 @@ fun InputMenu(
         }
     }
     Row(
-        horizontalArrangement = Arrangement.spacedBy(0.dp),
+        horizontalArrangement = Arrangement.spacedBy(zero),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
         Image(
             painter = painterResource(id = currencyCodes[code.value]?.third ?: R.drawable.ic_launcher_background),
             contentDescription = code.value,
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier.padding(Padding.large),
             colorFilter = if (code.value == "XAF" || code.value == "XCD") {
                 androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
             } else {
@@ -197,7 +203,7 @@ fun InputMenu(
         )
         Box(
             modifier = Modifier
-                .padding(16.dp),
+                .padding(Padding.large),
             contentAlignment = Alignment.Center,
         ) {
             IconButton(
@@ -223,7 +229,7 @@ fun InputMenu(
             Column {
                 val focusManager: FocusManager = LocalFocusManager.current
                 Column(
-                    modifier = Modifier.padding(vertical = 16.dp)
+                    modifier = Modifier.padding(vertical = Padding.large)
                 ) {
                     SearchBar(
                         text = searchInput,
@@ -237,7 +243,7 @@ fun InputMenu(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                        .padding(16.dp)
+                        .padding(Padding.large)
                 ) {
                     var currentContinent = ""
                     currencyCodes.filter { it.value.third != 0 }.filter {
@@ -257,18 +263,18 @@ fun InputMenu(
                                 ),
                             )
                             HorizontalDivider(
-                                modifier = Modifier.padding(vertical = 8.dp),
+                                modifier = Modifier.padding(vertical = Padding.small),
                                 color = MaterialTheme.colorScheme.onSurface.copy(0.1f)
                             )
                             currentContinent = currency.value.first
                         }
                         Row(
-                            horizontalArrangement = Arrangement.spacedBy(0.dp),
+                            horizontalArrangement = Arrangement.spacedBy(zero),
                             verticalAlignment = Alignment.CenterVertically,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(8.dp)
-                                .clip(RoundedCornerShape(8.dp))
+                                .padding(Padding.small)
+                                .clip(RoundedCornerShape(Radius.small))
                                 .clickable {
                                     closeSheet(currency.key)
                                 }
@@ -278,7 +284,7 @@ fun InputMenu(
                                     id = currency.value.third ?: R.drawable.ic_launcher_background
                                 ),
                                 contentDescription = currency.value.second,
-                                modifier = Modifier.size(24.dp),
+                                modifier = Modifier.size(Icon.normal),
                                 colorFilter = if (currency.key == "XAF" || currency.key == "XCD") {
                                     androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                                 } else {
@@ -287,11 +293,11 @@ fun InputMenu(
                             )
                             Column(
                                 verticalArrangement = Arrangement.spacedBy(
-                                    8.dp,
+                                    Padding.small,
                                     Alignment.CenterVertically
                                 ),
                                 modifier = Modifier
-                                    .padding(start = 16.dp)
+                                    .padding(start = Padding.large)
                                     .fillMaxWidth()
                             ) {
                                 Text(

@@ -22,6 +22,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.currencies.R
+import com.example.currencies.ui.theme.Padding
+import com.example.currencies.ui.theme.Radius
 
 
 @Composable
@@ -30,18 +32,18 @@ fun SwapPageInstructions(
 ) {
     Column(
         modifier = Modifier
-            .clip(RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(Radius.small))
             .verticalScroll(rememberScrollState())
             .background(MaterialTheme.colorScheme.secondaryContainer)
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = Padding.large)
         ,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
+        verticalArrangement = Arrangement.spacedBy(Padding.small, Alignment.Top),
     ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = Padding.small)
                 ,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
@@ -57,7 +59,7 @@ fun SwapPageInstructions(
                         fontWeight = FontWeight.Normal,
                         fontSize = 16.sp,
                     ),
-                    modifier = Modifier.padding(vertical = 8.dp)
+                    modifier = Modifier.padding(vertical = Padding.small)
                 )
             }
 

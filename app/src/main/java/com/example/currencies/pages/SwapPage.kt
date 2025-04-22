@@ -46,6 +46,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.currencies.search.components.roundToDigits
 import com.example.currencies.swap.SwapPageInstructions
 import com.example.currencies.swap.SwapInputSelector
+import com.example.currencies.ui.theme.Border
+import com.example.currencies.ui.theme.Icon
+import com.example.currencies.ui.theme.Padding
+import com.example.currencies.ui.theme.zero
 import com.example.currencies.viewmodels.ExchangeRateViewModel
 import dropShadow
 import kotlinx.coroutines.delay
@@ -88,9 +92,9 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
     val context  = LocalContext.current
     Column(
         modifier = Modifier
-            .padding(top = 64.dp, bottom = 16.dp, start = 32.dp, end = 32.dp),
+            .padding(top = Padding.extraLarge, bottom = Padding.large, start = Padding.main, end = Padding.main),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
+        verticalArrangement = Arrangement.spacedBy(Padding.large, Alignment.Top),
     ) {
         val focusManager: FocusManager = LocalFocusManager.current
         Text(
@@ -103,11 +107,11 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
             contentAlignment = Alignment.CenterEnd,
             modifier = Modifier
                 .wrapContentSize()
-                .padding(vertical = 32.dp),
+                .padding(vertical = Padding.main),
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top),
+                verticalArrangement = Arrangement.spacedBy(Padding.large, Alignment.Top),
             ) {
                 SwapInputSelector(true, numberInput, codeInput, focusManager, hideKeyBoard)
                 SwapInputSelector(false, numberOutput, codeOutput,focusManager, hideKeyBoard)
@@ -118,27 +122,27 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
                     .offset(x = (-10).dp)
                     .dropShadow(
                         color = Color.Black.copy(0.1f),
-                        offsetX = 0.dp,
-                        offsetY = 0.dp,
+                        offsetX = zero,
+                        offsetY = zero,
                         blur = 8.dp,
                         shape = CircleShape,
                     )
                     .border(
-                        width = 1.dp,
+                        width = Border.medium,
                         color = Color.Black.copy(0.1f),
                         shape = CircleShape,
                     )
                     .rotate(animatedRotationAngle)
                     .clip(CircleShape)
                     .background(color = MaterialTheme.colorScheme.tertiaryContainer)
-                    .padding(8.dp),
+                    .padding(Padding.small),
             ) {
                 Icon(
                     imageVector = Icons.Outlined.SyncAlt,
                     contentDescription = "Swap Icon",
                     tint = MaterialTheme.colorScheme.onTertiaryContainer,
                     modifier = Modifier
-                        .size(24.dp)
+                        .size(Icon.normal)
                         .clickable(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,

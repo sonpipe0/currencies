@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp
 
 
+val zero = 0.dp
 object Padding {
+    val extraLarge = 64.dp
     val main = 32.dp
     val large = 16.dp
     val big = 12.dp
@@ -25,6 +27,7 @@ object Radius {
 
 object Box {
     object Height {
+        val extraLarge = 72.dp
         val large = 68.dp
         val medium = 56.dp
     }
@@ -33,6 +36,9 @@ object Box {
         val big = 100.dp
         val medium = 68.dp
     }
+    object Size {
+        val small = 24.dp
+    }
 }
 
 object Border {
@@ -40,5 +46,10 @@ object Border {
     val thin = 0.5.dp
     val medium = 1.dp
     val thick = 2.dp
+}
+
+object Icon {
+    val normal = 24.dp
+    val small = 20.dp
 }
 

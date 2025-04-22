@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.example.currencies.ui.theme.Box
 import dropShadow
 
 @Composable
@@ -77,7 +78,7 @@ fun TabView(tabBarItems: List<TabBarItem>, onNavigate: (String) -> Unit) {
     ) {
         tabBarItems.forEachIndexed { index, tabBarItem ->
             NavigationBarItem(
-                modifier = Modifier.width(100.dp),
+                modifier = Modifier.width(Box.Width.big),
                 colors = NavigationBarItemColors(
                     MaterialTheme.colorScheme.onSurface,
                     MaterialTheme.colorScheme.onSurface,
