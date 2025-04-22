@@ -1,5 +1,7 @@
 package com.example.currencies.pages
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -20,7 +22,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -38,12 +42,17 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.currencies.swap.RatesComponent
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.currencies.search.components.roundToDigits
+import com.example.currencies.swap.SwapPageInstructions
 import com.example.currencies.swap.SwapInputSelector
+import com.example.currencies.viewmodels.ExchangeRateViewModel
 import dropShadow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
     val numberInput: MutableState<String> = remember { mutableStateOf("0") }
@@ -51,6 +60,8 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
     val numberOutput: MutableState<String> = remember { mutableStateOf("0") }
     val codeOutput: MutableState<String> = remember { mutableStateOf("EUR") }
     var rotationAngle by remember { mutableFloatStateOf(90f) }
+    val exchangeRateViewModel = hiltViewModel<ExchangeRateViewModel>()
+    val exchangeRate by exchangeRateViewModel.currentExchangeRate.collectAsState()
     val animatedRotationAngle by animateFloatAsState(
         targetValue = rotationAngle,
         animationSpec = tween(
@@ -58,6 +69,21 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
         )
     )
     val scope = rememberCoroutineScope()
+
+    LaunchedEffect(codeInput.value, codeOutput.value, numberInput.value) {
+        if (codeInput.value != codeOutput.value) {
+            exchangeRateViewModel.fetchExchangeRates(codeInput.value, codeOutput.value)
+            println("Fetching exchange rate for ${codeInput.value} to ${codeOutput.value}")
+            println("Exchange rate: $exchangeRate")
+            numberOutput.value = numberInput.value.toDoubleOrNull()?.let {
+                if (it > 0) {
+                    (it * exchangeRate).roundToDigits(1).toString()
+                } else {
+                    "0"
+                }
+            } ?: "0"
+        }
+    }
 
     val context  = LocalContext.current
     Column(
@@ -133,7 +159,14 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
                 )
             }
         }
-        RatesComponent(baseCoin = "USD")
+        // print the exchange rate
+        Text(
+            text = "Exchange rate: ${exchangeRate.roundToDigits(2)}",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        SwapPageInstructions(baseCoin = "USD")
     }
 }
 

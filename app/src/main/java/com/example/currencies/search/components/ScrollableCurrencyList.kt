@@ -1,5 +1,7 @@
 package com.example.currencies.search.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +27,7 @@ import com.example.currencies.search.hooks.CurrencyRateSearcher
 import com.example.currencies.viewmodels.AllCurrenciesValuesViewModel
 import dropShadow
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ScrollableCurrencyList(
     prefix: MutableState<String>,

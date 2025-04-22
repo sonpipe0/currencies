@@ -1,7 +1,10 @@
 package com.example.currencies.viewmodels
 
+import DayScheme
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.currencies.requests.ApiServiceImpl
@@ -21,6 +24,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class AllCurrenciesValuesViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -29,7 +33,11 @@ class AllCurrenciesValuesViewModel @Inject constructor(
     private val _currencies = MutableStateFlow<List<CurrencyRate>>(emptyList())
     val currencies = _currencies.asStateFlow()
 
+    private val _dayScheme = MutableStateFlow<DayScheme>(DayScheme.DAILY)
+    val dayScheme = _dayScheme.asStateFlow()
+
     private val _staticCurrencies = MutableStateFlow<List<CurrencyRate>>(emptyList())
+    private val _oldCurrencies = MutableStateFlow<Map<String, Double>>(emptyMap())
 
     private val _loading = MutableStateFlow(true)
     val loading = _loading.asStateFlow()
@@ -55,8 +63,62 @@ class AllCurrenciesValuesViewModel @Inject constructor(
         changeLoading(false)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun changeDayScheme(dayScheme: DayScheme) {
+        viewModelScope.launch {
+            _dayScheme.emit(dayScheme)
+            getHistoricCurrencies("USD")
+        }
+    }
+
+    private fun getHistoricCurrencies(base: String) {
+        changeLoading(true) // Set loading state first
+
+        apiServiceImpl.getLastDayWeekOrMonthRates(
+            context = context,
+            base = base,
+            scheme = _dayScheme.value,
+            onSuccess = { historicResponse: LatestRatesResponse ->
+
+                viewModelScope.launch {
+                    _oldCurrencies.emit(historicResponse.conversionRates)
+                    _staticCurrencies.emit(
+                        _staticCurrencies.value.map {
+                            val oldValue = _oldCurrencies.value[it.code]
+                            val newValue = it.value
+                            val dailyChangeValue = newValue - (oldValue ?: 0.0)
+                            val dailyChangePercentage = (dailyChangeValue / (oldValue ?: 1.0)) * 100
+                            it.copy(
+                                dailyChangePercentage = dailyChangePercentage,
+                                dailyChangeValue = dailyChangeValue
+                            )
+                        }
+                    )
+                    _currencies.emit(
+                        _staticCurrencies.value
+                    )
+                    _filters.emit(
+                        listOf()
+                    )
+
+                    changeLoading(false)
+                }
+            },
+            onFail = {
+                viewModelScope.launch {
+                    _showRetry.value = true
+                    changeLoading(false)
+                }
+            },
+            loadingFinished = {
+                // Don't set loading finished here - it's handled after data processing
+            }
+        )
+    }
+
     @SuppressLint("DefaultLocale")
-    public fun fetchAllCurrencies(base: String) {
+    private fun fetchAllCurrencies(base: String) {
+        val isFirstRun = _staticCurrencies.value.isEmpty()
         if (_staticCurrencies.value.isNotEmpty()) return
         viewModelScope.launch {
             _isSearching.emit(true)
@@ -80,10 +142,11 @@ class AllCurrenciesValuesViewModel @Inject constructor(
                             )
                         }
                     )
+                    if(isFirstRun) changeDayScheme(DayScheme.DAILY)
                 }
+                _staticCurrencies.value = _currencies.value
                 _showRetry.value = false
                 _isSearching.value = false
-                _staticCurrencies.value = _currencies.value
             },
             onFail = {
                 _showRetry.value = true
@@ -98,9 +161,9 @@ class AllCurrenciesValuesViewModel @Inject constructor(
 
     fun filterCurrencies(prefix: String) {
         viewModelScope.launch {
+            changeLoading(true)
+            delay(400)
             withContext(Dispatchers.IO) {
-                changeLoading(true)
-                delay(400)
                 _currencies.emit(
                     _staticCurrencies.value.filter {
                         it.name.startsWith(prefix, ignoreCase = true) || it.code.startsWith(
@@ -136,7 +199,6 @@ class AllCurrenciesValuesViewModel @Inject constructor(
     }
 
     private fun changeLoading(boolean: Boolean) {
-        println(_isSearching.value)
         if (_isSearching.value) return
         viewModelScope.launch {
             _loading.emit(boolean)

@@ -1,5 +1,6 @@
 package com.example.currencies.requests
 
+import DayScheme
 import android.content.Context
 import android.os.Build
 import android.widget.Toast
@@ -48,7 +49,6 @@ class ApiServiceImpl @Inject constructor() {
                 loadingFinished()
                 if (response?.isSuccess == true) {
                     val latestRatesResponse = response.body()
-                    println(latestRatesResponse)
                     if (latestRatesResponse != null) {
                         onSuccess(latestRatesResponse)
                     } else {
@@ -69,6 +69,78 @@ class ApiServiceImpl @Inject constructor() {
             }
         })
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getLastDayWeekOrMonthRates(
+        context: Context,
+        base: String,
+        scheme: DayScheme,
+        onSuccess: (LatestRatesResponse) -> Unit,
+        onFail: () -> Unit,
+        loadingFinished: () -> Unit
+    ) {
+        val service: ApiService = retrofit.create(ApiService::class.java)
+
+        val date: LocalDate = when (scheme) {
+            DayScheme.DAILY -> LocalDate.now().minusDays(1)
+            DayScheme.WEEKLY -> LocalDate.now().with(java.time.DayOfWeek.MONDAY)
+            DayScheme.QUARTERLY -> {
+                val day = LocalDate.now().dayOfMonth
+                val firstDayQuarter = when {
+                    day <= 15 -> 1
+                    else -> 15
+                }
+                LocalDate.of(LocalDate.now().year, LocalDate.now().month, firstDayQuarter)
+            }
+
+            DayScheme.MONTHLY -> LocalDate.now().withDayOfMonth(1)
+        }
+
+        val schemeString = when (scheme) {
+            DayScheme.DAILY -> "Daily"
+            DayScheme.WEEKLY -> "Weekly"
+            DayScheme.QUARTERLY -> "Quarterly"
+            DayScheme.MONTHLY -> "Monthly"
+        }
+
+        val call: Call<HistoricalPointResponse> = service.getHistoricalPoint(
+            base,
+            date.year.toInt(),
+            date.monthValue.toInt(),
+            date.dayOfMonth.toInt()
+        )
+
+        call.enqueue(object : Callback<HistoricalPointResponse> {
+            override fun onResponse(
+                response: Response<HistoricalPointResponse>?,
+                retrofit: Retrofit?
+            ) {
+                loadingFinished()
+                if (response?.isSuccess == true) {
+                    val historicalResponse: HistoricalPointResponse = response.body()
+                    val latestRatesResponse = LatestRatesResponse(
+                        baseCode = historicalResponse.baseCode,
+                        conversionRates = historicalResponse.conversionRates,
+                    )
+                    onSuccess(latestRatesResponse)
+                } else {
+                    onFail()
+                }
+            }
+
+            override fun onFailure(t: Throwable) {
+                println(t.message)
+                Toast.makeText(
+                    context,
+                    "Failed to fetch last $schemeString currencies",
+                    Toast.LENGTH_SHORT
+                ).show()
+                onFail()
+                loadingFinished()
+            }
+        })
+    }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getHistoricalPointsForCurrency(

@@ -1,5 +1,7 @@
 package com.example.currencies.pages
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +41,7 @@ import com.example.currencies.search_filter.FilterType
 import com.example.currencies.viewmodels.AllCurrenciesValuesViewModel
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchPage(hideKeyBoard: MutableState<Boolean>) {

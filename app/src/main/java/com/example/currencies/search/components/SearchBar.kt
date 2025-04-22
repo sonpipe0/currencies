@@ -29,6 +29,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.currencies.common.CustomFocusableTextField
+import com.example.currencies.ui.theme.Border
+import com.example.currencies.ui.theme.Box
+import com.example.currencies.ui.theme.Padding
+import com.example.currencies.ui.theme.Radius
 
 
 @Composable
@@ -46,21 +50,21 @@ fun SearchBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp)
-            .padding(horizontal = 16.dp)
-            .then(if (isRounded) Modifier.clip(RoundedCornerShape(32.dp)) else Modifier.clip(
-                RoundedCornerShape(4.dp)
+            .height(Box.Height.medium)
+            .padding(horizontal = Padding.large)
+            .then(if (isRounded) Modifier.clip(RoundedCornerShape(Radius.large)) else Modifier.clip(
+                RoundedCornerShape(Radius.extraSmall)
             ))
             .then(
                 if (isOutlined) Modifier.background(Color.Transparent).border(
-                    1.dp,
+                    Border.medium,
                     MaterialTheme.colorScheme.primary,
-                    RoundedCornerShape(32.dp)
+                    RoundedCornerShape(Radius.large)
                 ) else Modifier.background(
                     MaterialTheme.colorScheme.surfaceContainerHigh,
                 )
             )
-            .padding(vertical = 8.dp, horizontal = 16.dp),
+            .padding(vertical = Padding.small, horizontal = Padding.medium),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

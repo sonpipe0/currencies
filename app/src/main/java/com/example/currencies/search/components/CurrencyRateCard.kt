@@ -26,20 +26,30 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.fastRoundToInt
 import com.example.currencies.search.types.CurrencyRate
+import com.example.currencies.ui.theme.Border
+import com.example.currencies.ui.theme.Box
+import com.example.currencies.ui.theme.Padding
 import java.util.Locale
+import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.round
 
+fun Double.roundToDigits(digits: Int): Double {
+    val factor = 10.0.pow(digits.toDouble())
+    return kotlin.math.round(this * factor) / factor
+}
 @Composable
 fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD",onFavorite: () -> Unit, isFavorite: Boolean = false ,last: Boolean = false) {
-    val positive: Boolean = currencyRate.dailyChangePercentage > 0
+    val positive: Boolean = currencyRate.dailyChangePercentage <= 0
     val onPrimaryContainerColor: Color = MaterialTheme.colorScheme.onSurface
-    return Row (
+    return Row(
         modifier = Modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .then(
                 if (!last) Modifier.drawBehind {
-                    val borderSize = 0.5.dp
                     drawLine(
                         color = onPrimaryContainerColor,
                         start = Offset(0f, size.height),
@@ -47,20 +57,20 @@ fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD
                     )
                 } else Modifier
             )
-            .height(68.dp)
+            .height(Box.Height.large)
             .padding(
-                10.dp
+                Padding.medium
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row (
+        Row(
             modifier = Modifier
                 .fillMaxHeight()
                 .weight(1f),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
-        ){
+        ) {
             Icon(
                 modifier = Modifier
                     .clickable { onFavorite() },
@@ -69,8 +79,8 @@ fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD
                 tint = MaterialTheme.colorScheme.onSurface
             )
             Column(
-                modifier = Modifier.width(128.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp)
+                modifier = Modifier.width(Box.Width.large),
+                verticalArrangement = Arrangement.spacedBy(Padding.extraSmall),
             ) {
                 Text(
                     currencyRate.code,
@@ -90,23 +100,29 @@ fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD
                 )
             }
         }
-        Column (
-            modifier = Modifier.fillMaxHeight().weight(1f),
+        Column(
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f),
             horizontalAlignment = Alignment.End,
             verticalArrangement = Arrangement.SpaceBetween
-        ){
-            Text("${currencyRate.value} $baseCurrencyCode",
+        ) {
+            Text(
+                "1 $baseCurrencyCode  = ${currencyRate.value} ${currencyRate.code}",
                 style = TextStyle(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Normal,
                     color = MaterialTheme.colorScheme.onSurface,
                 ))
-            Text("${if(positive )"+" else "-"} ${String.format(Locale.getDefault(), "%.2f", currencyRate.dailyChangePercentage * 100).substring(1)} %",
+            var text = "${(currencyRate.dailyChangePercentage * -1).roundToDigits(2).toString()} %"
+
+            Text(if (text == "-0.0 %") "0.00 %" else text,
                 style = TextStyle(
                     color = if (positive) Color(0xff2FD905) else MaterialTheme.colorScheme.error,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
-                ))
+                )
+            )
         }
     }
 }

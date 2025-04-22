@@ -25,7 +25,7 @@ import com.example.currencies.R
 
 
 @Composable
-fun RatesComponent(
+fun SwapPageInstructions(
     baseCoin: String
 ) {
     Column(
@@ -46,27 +46,18 @@ fun RatesComponent(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Row (
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Image(
-                        painter = painterResource(id = R.drawable.us),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(32.dp)
-                    )
-                    Text(
-                        text = "USD",
-                        fontSize = 16.sp,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                        fontWeight = FontWeight.SemiBold,
-                    )
-                }
                 Text(
-                    text = "1.00 $baseCoin",
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
+                    text = "This is the swap page\nWhere you can exchange your currency for other currencies.\n" +
+                            "1. Select your target currency\n" +
+                            "2. Enter the amount to swap\n" +
+                            "3. Review the exchange rate\n" +
+                            "4. Confirm your transaction",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        fontWeight = FontWeight.Normal,
+                        fontSize = 16.sp,
+                    ),
+                    modifier = Modifier.padding(vertical = 8.dp)
                 )
             }
 

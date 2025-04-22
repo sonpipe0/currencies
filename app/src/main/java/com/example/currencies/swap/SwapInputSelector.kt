@@ -1,6 +1,7 @@
 package com.example.currencies.swap
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,6 +64,18 @@ fun SwapInputSelector(
     focusManager: FocusManager,
     hideKeyBoard: MutableState<Boolean>
 ) {
+    val reactiveFontSize = remember { mutableStateOf(30.sp) }
+    LaunchedEffect(value.value) {
+        if (value.value.length < 6) {
+            reactiveFontSize.value = 30.sp
+        }
+        if (value.value.length >= 6) {
+            reactiveFontSize.value = 18.sp
+        }
+        if (value.value.length >= 9) {
+            reactiveFontSize.value = 14.sp
+        }
+    }
     return Row(
         horizontalArrangement = Arrangement.spacedBy(0.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -74,6 +88,7 @@ fun SwapInputSelector(
                 shape = RoundedCornerShape(8.dp)
             )
             .clip(shape = RoundedCornerShape(8.dp))
+            .then(if (!enabled) Modifier.background(MaterialTheme.colorScheme.surfaceContainerHigh) else Modifier)
     ) {
         InputMenu(
             modifier = Modifier
@@ -95,6 +110,15 @@ fun SwapInputSelector(
                     return@CustomFocusableTextField
                 }
                 if (it.length < 6) {
+                    reactiveFontSize.value = 30.sp
+                }
+                if (it.length >= 6) {
+                    reactiveFontSize.value = 18.sp
+                }
+                if (it.length >= 9) {
+                    reactiveFontSize.value = 14.sp
+                }
+                if(it.length < 11) {
                     value.value = it
                 }
             },
@@ -108,9 +132,13 @@ fun SwapInputSelector(
                 keyboardType = KeyboardType.Number,
             ),
             textStyle = TextStyle(
-                color = MaterialTheme.colorScheme.onBackground,
+                color = if(enabled) {
+                    MaterialTheme.colorScheme.onBackground
+                } else {
+                    MaterialTheme.colorScheme.onSurface.copy(0.5f)
+                },
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 30.sp,
+                fontSize = reactiveFontSize.value,
                 textAlign = TextAlign.End
             ),
             focusManager = focusManager,
