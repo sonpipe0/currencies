@@ -34,8 +34,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.currencies.search.components.FilterModalBottomSheet
 import com.example.currencies.search.components.ScrollableCurrencyList
 import com.example.currencies.search.components.SearchBar
-import com.example.currencies.search.hooks.CurrencyRateSearcher
-import com.example.currencies.search.hooks.MockCurrencyRateSearcher
 import com.example.currencies.search_filter.ActionFilter
 import com.example.currencies.search_filter.FilterType
 import com.example.currencies.ui.theme.Icon
@@ -48,7 +46,6 @@ import com.example.currencies.viewmodels.AllCurrenciesValuesViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchPage(hideKeyBoard: MutableState<Boolean>) {
-    val currencyRateSearcher: CurrencyRateSearcher = MockCurrencyRateSearcher();
     val text: MutableState<String> = remember { mutableStateOf("") }
     val isExpanded: MutableState<Boolean> = remember { mutableStateOf(false) }
     val filterViewModel = hiltViewModel<AllCurrenciesValuesViewModel>()
@@ -88,7 +85,7 @@ fun SearchPage(hideKeyBoard: MutableState<Boolean>) {
                 }
             }
         }
-        ScrollableCurrencyList(text, currencyRateSearcher)
+        ScrollableCurrencyList(text)
 
         FilterModalBottomSheet(isExpanded = isExpanded.value,
             onDismissRequest = { isExpanded.value = false }

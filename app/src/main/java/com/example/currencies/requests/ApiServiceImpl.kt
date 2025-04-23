@@ -6,6 +6,7 @@ import android.os.Build
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.currencies.BuildConfig
+import com.example.currencies.R
 import com.example.currencies.responses.HistoricalPointResponse
 import com.example.currencies.responses.LatestRatesResponse
 import com.example.currencies.responses.PairConversionResponse
@@ -38,8 +39,6 @@ class ApiServiceImpl @Inject constructor() {
         val service: ApiService = retrofit.create(ApiService::class.java)
 
         val call: Call<LatestRatesResponse> = service.getLatestRates(base)
-        //print uri
-
 
         call.enqueue(object : retrofit.Callback<LatestRatesResponse> {
             override fun onResponse(
@@ -52,18 +51,16 @@ class ApiServiceImpl @Inject constructor() {
                     if (latestRatesResponse != null) {
                         onSuccess(latestRatesResponse)
                     } else {
-                        println("latestRatesResponse null")
                         onFail()
                     }
                 } else {
-                    println("not success")
                     onFail()
                 }
             }
 
             override fun onFailure(t: Throwable) {
                 println(t.message)
-                Toast.makeText(context, "Failed to fetch currencies", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.failed_to_fetch_currencies, Toast.LENGTH_SHORT).show()
                 onFail()
                 loadingFinished()
             }
@@ -96,11 +93,11 @@ class ApiServiceImpl @Inject constructor() {
             DayScheme.MONTHLY -> LocalDate.now().withDayOfMonth(1)
         }
 
-        val schemeString = when (scheme) {
-            DayScheme.DAILY -> "Daily"
-            DayScheme.WEEKLY -> "Weekly"
-            DayScheme.QUARTERLY -> "Quarterly"
-            DayScheme.MONTHLY -> "Monthly"
+        val schemeStringError = when (scheme) {
+            DayScheme.DAILY -> context.getString(R.string.failed_to_fetch_last_day_currencies)
+            DayScheme.WEEKLY -> context.getString(R.string.failed_to_fetch_last_week_currencies)
+            DayScheme.QUARTERLY -> context.getString(R.string.failed_to_fetch_last_quarter_currencies)
+            DayScheme.MONTHLY -> context.getString(R.string.failed_to_fetch_last_month_currencies)
         }
 
         val call: Call<HistoricalPointResponse> = service.getHistoricalPoint(
@@ -132,7 +129,7 @@ class ApiServiceImpl @Inject constructor() {
                 println(t.message)
                 Toast.makeText(
                     context,
-                    "Failed to fetch last $schemeString currencies",
+                    schemeStringError,
                     Toast.LENGTH_SHORT
                 ).show()
                 onFail()
@@ -192,7 +189,8 @@ class ApiServiceImpl @Inject constructor() {
                 }
 
                 override fun onFailure(t: Throwable) {
-                    Toast.makeText(context, "Failed to fetch currencies", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,
+                        context.getString(R.string.failed_to_fetch_currencies), Toast.LENGTH_SHORT).show()
                     onFail()
                     loadingFinished()
                 }
@@ -225,7 +223,7 @@ class ApiServiceImpl @Inject constructor() {
             }
 
             override fun onFailure(t: Throwable) {
-                Toast.makeText(context, "Failed to fetch currencies", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, R.string.failed_to_fetch_currencies, Toast.LENGTH_SHORT).show()
                 onFail()
             }
         })

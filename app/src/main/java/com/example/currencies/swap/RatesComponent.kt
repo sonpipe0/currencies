@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,11 +50,7 @@ fun SwapPageInstructions(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "This is the swap page\nWhere you can exchange your currency for other currencies.\n" +
-                            "1. Select your target currency\n" +
-                            "2. Enter the amount to swap\n" +
-                            "3. Review the exchange rate\n" +
-                            "4. Confirm your transaction",
+                    text = stringResource(R.string.instructions),
                     style = MaterialTheme.typography.bodyLarge.copy(
                         color = MaterialTheme.colorScheme.onSecondaryContainer,
                         fontWeight = FontWeight.Normal,

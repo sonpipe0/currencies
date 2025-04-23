@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.currencies.search.hooks.CurrencyRateSearcher
 import com.example.currencies.viewmodels.AllCurrenciesValuesViewModel
 import dropShadow
 
@@ -31,7 +30,6 @@ import dropShadow
 @Composable
 fun ScrollableCurrencyList(
     prefix: MutableState<String>,
-    currencyRateSearcher: CurrencyRateSearcher
 ) {
     val allCurrenciesValuesViewModels = hiltViewModel<AllCurrenciesValuesViewModel>()
     val currencyRates by allCurrenciesValuesViewModels.currencies.collectAsState()

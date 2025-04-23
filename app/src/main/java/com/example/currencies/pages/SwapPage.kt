@@ -39,10 +39,12 @@ import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.currencies.R
 import com.example.currencies.search.components.roundToDigits
 import com.example.currencies.swap.SwapPageInstructions
 import com.example.currencies.swap.SwapInputSelector
@@ -77,8 +79,6 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
     LaunchedEffect(codeInput.value, codeOutput.value, numberInput.value) {
         if (codeInput.value != codeOutput.value) {
             exchangeRateViewModel.fetchExchangeRates(codeInput.value, codeOutput.value)
-            println("Fetching exchange rate for ${codeInput.value} to ${codeOutput.value}")
-            println("Exchange rate: $exchangeRate")
             numberOutput.value = numberInput.value.toDoubleOrNull()?.let {
                 if (it > 0) {
                     (it * exchangeRate).roundToDigits(1).toString()
@@ -98,7 +98,7 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
     ) {
         val focusManager: FocusManager = LocalFocusManager.current
         Text(
-            text = "Swap",
+            text = stringResource(R.string.swap),
             fontSize = 32.sp,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.onBackground,
@@ -165,7 +165,7 @@ fun SwapPage(hideKeyBoard: MutableState<Boolean>) {
         }
         // print the exchange rate
         Text(
-            text = "Exchange rate: ${exchangeRate.roundToDigits(2)}",
+            text = stringResource(R.string.exchange_rate, exchangeRate.roundToDigits(2)),
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onBackground,

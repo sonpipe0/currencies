@@ -6,7 +6,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import com.example.ui.theme.AppTypography
+import com.example.currencies.ui.theme.AppTypography
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,

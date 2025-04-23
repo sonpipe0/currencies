@@ -24,10 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.currencies.R
 import com.example.currencies.common.CustomFocusableTextField
 import com.example.currencies.ui.theme.Border
 import com.example.currencies.ui.theme.Box
@@ -52,15 +54,19 @@ fun SearchBar(
             .fillMaxWidth()
             .height(Box.Height.medium)
             .padding(horizontal = Padding.large)
-            .then(if (isRounded) Modifier.clip(RoundedCornerShape(Radius.large)) else Modifier.clip(
-                RoundedCornerShape(Radius.extraSmall)
-            ))
             .then(
-                if (isOutlined) Modifier.background(Color.Transparent).border(
-                    Border.medium,
-                    MaterialTheme.colorScheme.primary,
-                    RoundedCornerShape(Radius.large)
-                ) else Modifier.background(
+                if (isRounded) Modifier.clip(RoundedCornerShape(Radius.large)) else Modifier.clip(
+                    RoundedCornerShape(Radius.extraSmall)
+                )
+            )
+            .then(
+                if (isOutlined) Modifier
+                    .background(Color.Transparent)
+                    .border(
+                        Border.medium,
+                        MaterialTheme.colorScheme.primary,
+                        RoundedCornerShape(Radius.large)
+                    ) else Modifier.background(
                     MaterialTheme.colorScheme.surfaceContainerHigh,
                 )
             )
@@ -83,7 +89,7 @@ fun SearchBar(
                 hideKeyBoard.value = true
                 text.value = ""
             }),
-            placeholder = "Search for a currency",
+            placeholder = stringResource(R.string.search_for_a_currency),
             placeholderStyle = style,
             focusManager = focusManager,
             hideKeyBoard = hideKeyBoard,

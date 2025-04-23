@@ -1,5 +1,7 @@
 package com.example.currencies.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,6 +16,7 @@ import androidx.navigation.compose.composable
 import com.example.currencies.pages.SearchPage
 import com.example.currencies.pages.SwapPage
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun NavHostComposable(hideKeyboard: MutableState<Boolean> ,innerPadding: PaddingValues, navController: NavHostController) {
     return NavHost(

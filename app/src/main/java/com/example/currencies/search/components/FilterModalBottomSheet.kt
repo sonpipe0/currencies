@@ -9,10 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -34,8 +31,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.currencies.R
 import com.example.currencies.search_filter.ActionFilter
 import com.example.currencies.search_filter.CurrencyMode
 import com.example.currencies.search_filter.Filter
@@ -74,7 +72,7 @@ fun FilterModalBottomSheet(
                     modifier = Modifier.padding(Padding.large),
                     verticalArrangement = Arrangement.spacedBy(Padding.medium)
                 ) {
-                    Text("Compare by", style = MaterialTheme.typography.titleLarge)
+                    Text(stringResource(R.string.compare_by), style = MaterialTheme.typography.titleLarge)
                     var isMenuOpen by remember { mutableStateOf(false) }
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -136,9 +134,14 @@ fun FilterModalBottomSheet(
                         modifier = Modifier.padding(vertical = Padding.small),
                         color = MaterialTheme.colorScheme.onSurface.copy(0.12f)
                     )
-                    Text("Continents", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.continents), style = MaterialTheme.typography.titleMedium)
 
-                    val continents = listOf("Africa", "Asia", "Western Europe", "Eastern Europe","Oceania", "America")
+                    val continents = listOf(stringResource(R.string.africa),
+                        stringResource(R.string.asia),
+                        stringResource(R.string.western_europe),
+                        stringResource(R.string.eastern_europe),
+                        stringResource(R.string.oceania), stringResource(R.string.america)
+                    )
                     val mid = continents.size / 2
                     val firstHalf = continents.subList(0, mid)
                     val secondHalf = continents.subList(mid, continents.size)
@@ -154,9 +157,11 @@ fun FilterModalBottomSheet(
                         modifier = Modifier.padding(vertical = Padding.small),
                         color = MaterialTheme.colorScheme.onSurface.copy(0.12f)
                     )
-                    Text("Mkt Value", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.mkt_value), style = MaterialTheme.typography.titleMedium)
                     SingleChoiceSegmentedButtonRow(
-                        modifier = Modifier.padding(horizontal = Padding.main).fillMaxWidth()
+                        modifier = Modifier
+                            .padding(horizontal = Padding.main)
+                            .fillMaxWidth()
                     ) {
                         SegmentedButton(
                             selected = currencyMode == CurrencyMode.MORE_THAN,
@@ -168,7 +173,7 @@ fun FilterModalBottomSheet(
                                 count = 2,
                             ),
                         ) {
-                            Text("More than")
+                            Text(stringResource(R.string.more_than))
                         }
                         SegmentedButton(
                             selected = currencyMode == CurrencyMode.LESS_THAN,
@@ -180,7 +185,7 @@ fun FilterModalBottomSheet(
                                 count = 2,
                             ),
                         ) {
-                            Text("Less than")
+                            Text(stringResource(R.string.less_than))
                         }
 
                     }
@@ -206,7 +211,9 @@ private fun FilterRow(selectedFilters:List<Filter>, filters:List<String>, onClic
     Row(
         horizontalArrangement = Arrangement.spacedBy(Padding.medium),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())
+        modifier = Modifier
+            .fillMaxWidth()
+            .horizontalScroll(rememberScrollState())
     ) {
         for (filter in  filters) {
             ActionFilter(

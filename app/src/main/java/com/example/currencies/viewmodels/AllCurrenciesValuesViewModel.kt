@@ -17,6 +17,7 @@ import com.example.currencies.search_filter.FilterType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -159,8 +160,10 @@ class AllCurrenciesValuesViewModel @Inject constructor(
         )
     }
 
+    private var filterJob: Job? = null
     fun filterCurrencies(prefix: String) {
-        viewModelScope.launch {
+        filterJob?.cancel()
+        filterJob = viewModelScope.launch {
             changeLoading(true)
             delay(400)
             withContext(Dispatchers.IO) {
@@ -193,7 +196,6 @@ class AllCurrenciesValuesViewModel @Inject constructor(
                     }
                 )
             }
-        }.invokeOnCompletion {
             changeLoading(false)
         }
     }
