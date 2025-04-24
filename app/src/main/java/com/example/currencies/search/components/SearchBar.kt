@@ -45,9 +45,8 @@ fun SearchBar(
     isRounded: Boolean = true,
     hideKeyBoard: MutableState<Boolean> = remember { mutableStateOf(false) }
 ) {
-    val style: TextStyle = TextStyle(
+    val style: TextStyle = MaterialTheme.typography.bodyLarge.copy(
         color = MaterialTheme.colorScheme.onSurface,
-        fontSize = 20.sp
     )
     Row(
         modifier = Modifier
@@ -70,7 +69,7 @@ fun SearchBar(
                     MaterialTheme.colorScheme.surfaceContainerHigh,
                 )
             )
-            .padding(vertical = Padding.small, horizontal = Padding.medium),
+            .padding(vertical = Padding.small, horizontal = Padding.large),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {

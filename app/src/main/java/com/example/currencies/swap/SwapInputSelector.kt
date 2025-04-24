@@ -137,7 +137,7 @@ fun SwapInputSelector(
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number,
             ),
-            textStyle = TextStyle(
+            textStyle = TextStyle(// ignore hardcoding because of reactiveFontSize
                 color = if(enabled) {
                     MaterialTheme.colorScheme.onBackground
                 } else {
@@ -195,10 +195,9 @@ fun InputMenu(
         )
         Text(
             text = code.value,
-            style = TextStyle(
+            style = MaterialTheme.typography.titleLarge.copy(
                 color = MaterialTheme.colorScheme.onBackground,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 20.sp,
             ),
         )
         Box(
@@ -256,10 +255,9 @@ fun InputMenu(
                         if (currentContinent != currency.value.first) {
                             Text(
                                 text = currency.value.first,
-                                style = TextStyle(
+                                style = MaterialTheme.typography.bodyLarge.copy(
                                     color = MaterialTheme.colorScheme.onBackground,
                                     fontWeight = FontWeight.SemiBold,
-                                    fontSize = 20.sp,
                                 ),
                             )
                             HorizontalDivider(
@@ -284,7 +282,7 @@ fun InputMenu(
                                     id = currency.value.third ?: R.drawable.ic_launcher_background
                                 ),
                                 contentDescription = currency.value.second,
-                                modifier = Modifier.size(Icon.normal),
+                                modifier = Modifier.size(Icon.large),
                                 colorFilter = if (currency.key == "XAF" || currency.key == "XCD") {
                                     androidx.compose.ui.graphics.ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
                                 } else {
@@ -302,18 +300,16 @@ fun InputMenu(
                             ) {
                                 Text(
                                     text = currency.key,
-                                    style = TextStyle(
+                                    style = MaterialTheme.typography.titleLarge.copy(
                                         color = MaterialTheme.colorScheme.onBackground,
                                         fontWeight = FontWeight.Normal,
-                                        fontSize = 20.sp,
                                     ),
                                 )
                                 Text(
                                     text = currency.value.second,
-                                    style = TextStyle(
+                                    style = MaterialTheme.typography.bodySmall.copy(
                                         color = MaterialTheme.colorScheme.onBackground,
-                                        fontWeight = FontWeight.Thin,
-                                        fontSize = 12.sp,
+                                        fontWeight = FontWeight.Light,
                                     ),
                                 )
                             }

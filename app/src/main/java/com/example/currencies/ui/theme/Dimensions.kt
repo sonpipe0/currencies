@@ -49,6 +49,8 @@ object Border {
 }
 
 object Icon {
+    val large = 36.dp
+    val big = 32.dp
     val normal = 24.dp
     val small = 20.dp
 }

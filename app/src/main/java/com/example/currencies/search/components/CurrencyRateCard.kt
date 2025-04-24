@@ -84,16 +84,14 @@ fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD
             ) {
                 Text(
                     currencyRate.code,
-                    style = TextStyle(
+                    style = MaterialTheme.typography.titleMedium.copy(
                         fontWeight = FontWeight.SemiBold,
                         color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 16.sp,
                     )
                 )
                 Text(
                     currencyRate.name,
-                    style = TextStyle(
-                        fontSize = 10.sp,
+                    style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Light,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
@@ -109,17 +107,15 @@ fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD
         ) {
             Text(
                 "1 $baseCurrencyCode  = ${currencyRate.value} ${currencyRate.code}",
-                style = TextStyle(
-                    fontSize = 16.sp,
+                style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Normal,
                     color = MaterialTheme.colorScheme.onSurface,
                 ))
             var text = "${(currencyRate.dailyChangePercentage * -1).roundToDigits(2).toString()} %"
 
             Text(if (text == "-0.0 %") "0.00 %" else text,
-                style = TextStyle(
+                style = MaterialTheme.typography.titleMedium.copy(
                     color = if (positive) Color(0xff2FD905) else MaterialTheme.colorScheme.error,
-                    fontSize = 16.sp,
                     fontWeight = FontWeight.SemiBold
                 )
             )
