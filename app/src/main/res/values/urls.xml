@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="https_v6_exchangerate_api_com_v6">https://v6.exchangerate-api.com/v6/%1$s/</string>
+</resources>

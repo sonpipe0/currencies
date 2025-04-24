@@ -11,6 +11,7 @@ import com.example.currencies.responses.HistoricalPointResponse
 import com.example.currencies.responses.LatestRatesResponse
 import com.example.currencies.responses.PairConversionResponse
 import com.example.currencies.types.HistoricalPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit.Call
 import retrofit.Callback
 import retrofit.GsonConverterFactory
@@ -20,11 +21,13 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 
-class ApiServiceImpl @Inject constructor() {
+class ApiServiceImpl @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
     private val apiKey = BuildConfig.API_KEY
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://v6.exchangerate-api.com/v6/${apiKey}/")
+        .baseUrl(context.getString(R.string.https_v6_exchangerate_api_com_v6, apiKey))
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
