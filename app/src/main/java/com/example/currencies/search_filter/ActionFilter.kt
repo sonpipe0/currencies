@@ -4,12 +4,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 
 
+@Preview
 @Composable
-fun ActionFilter(onClick: () -> Unit,
-                 label: @Composable () -> Unit,
+fun ActionFilter(onClick: () -> Unit = {},
+                 label: @Composable () -> Unit = {Text("USD")},
                  selected: Boolean = false,
                  enabled: Boolean = true,
                  isLeadingIcon: Boolean = false) {

@@ -46,6 +46,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.currencies.R
@@ -63,12 +64,13 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
+@Preview
 fun SwapInputSelector(
-    enabled: Boolean,
-    value: MutableState<String>,
-    code: MutableState<String>,
-    focusManager: FocusManager,
-    hideKeyBoard: MutableState<Boolean>
+    enabled: Boolean = true,
+    value: MutableState<String> = remember { mutableStateOf("") },
+    code: MutableState<String> = remember { mutableStateOf("USD") },
+    focusManager: FocusManager = LocalFocusManager.current,
+    hideKeyBoard: MutableState<Boolean> = remember { mutableStateOf(false) }
 ) {
     val reactiveFontSize = remember { mutableStateOf(30.sp) }
     LaunchedEffect(value.value) {

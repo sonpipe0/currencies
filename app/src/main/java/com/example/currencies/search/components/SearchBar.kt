@@ -24,9 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.currencies.R
@@ -36,11 +38,14 @@ import com.example.currencies.ui.theme.Box
 import com.example.currencies.ui.theme.Padding
 import com.example.currencies.ui.theme.Radius
 
+private const val defaultText = ""
 
+
+@Preview
 @Composable
 fun SearchBar(
-    text: MutableState<String>,
-    focusManager: FocusManager,
+    text: MutableState<String> = remember { mutableStateOf(defaultText) },
+    focusManager: FocusManager = LocalFocusManager.current,
     isOutlined: Boolean = false,
     isRounded: Boolean = true,
     hideKeyBoard: MutableState<Boolean> = remember { mutableStateOf(false) }

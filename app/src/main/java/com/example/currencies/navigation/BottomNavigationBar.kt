@@ -24,13 +24,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.currencies.ui.theme.Box
 import dropShadow
 
 @Composable
+@Preview
 fun BottomNavigationBar(
-    onNavigate: (String) -> Unit,
+    onNavigate: (String) -> Unit = {},
 ) {
     val swapTab = TabBarItem(
         title = Screens.SWAP.name,

@@ -24,6 +24,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.fastRoundToInt
@@ -38,10 +39,19 @@ import kotlin.math.round
 
 fun Double.roundToDigits(digits: Int): Double {
     val factor = 10.0.pow(digits.toDouble())
-    return kotlin.math.round(this * factor) / factor
+    return round(this * factor) / factor
 }
+private val defaultCurrencyRate = CurrencyRate(
+    code = "USD",
+    name = "United States Dollar",
+    value = 1.0,
+    dailyChangePercentage = 2.0,
+    dailyChangeValue = 0.02,
+    continent = "America",
+)
 @Composable
-fun CurrencyRateCard(currencyRate: CurrencyRate, baseCurrencyCode: String = "USD",onFavorite: () -> Unit, isFavorite: Boolean = false ,last: Boolean = false) {
+@Preview
+fun CurrencyRateCard(currencyRate: CurrencyRate = defaultCurrencyRate, baseCurrencyCode: String = "USD",onFavorite: () -> Unit = {}, isFavorite: Boolean = false ,last: Boolean = false) {
     val positive: Boolean = currencyRate.dailyChangePercentage <= 0
     val onPrimaryContainerColor: Color = MaterialTheme.colorScheme.onSurface
     return Row(
