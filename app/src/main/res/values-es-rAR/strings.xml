@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">monedas</string>
+    <string name="instructions">Esta es la página de intercambio \n donde puede cambiar su moneda por otras monedas. \n1. Seleccione su moneda de destino \n2. Ingrese la cantidad para intercambiar \n3. Revise el tipo de cambio \n4. Confirma tu transacción</string>
+    <string name="compare_by">Comparar</string>
+    <string name="continents">Continentes</string>
+    <string name="africa">África</string>
+    <string name="asia">Asia</string>
+    <string name="western_europe">Europa occidental</string>
+    <string name="eastern_europe">Europa Oriental</string>
+    <string name="oceania">Oceanía</string>
+    <string name="america">América</string>
+    <string name="mkt_value">Valor MKT</string>
+    <string name="more_than">Más que</string>
+    <string name="less_than">Menos que</string>
+    <string name="search_for_a_currency">Buscar una moneda</string>
+    <string name="failed_to_fetch_last_month_currencies">No logró obtener monedas el mes pasado</string>
+    <string name="failed_to_fetch_last_quarter_currencies">No logró obtener monedas del último trimestre</string>
+    <string name="failed_to_fetch_last_week_currencies">No logró obtener monedas de la semana pasada</string>
+    <string name="failed_to_fetch_last_day_currencies">No pudo alcanzar las monedas del último día</string>
+    <string name="failed_to_fetch_currencies">No logró obtener monedas</string>
+    <string name="swap">Intercambio</string>
+    <string name="exchange_rate">Tipo de cambio: %1$s</string>
+    <string name="uae_dirham">EAU dirham</string>
+    <string name="afghan_afghani">Afgano afgano</string>
+    <string name="albanian_lek">Lek albanés</string>
+    <string name="armenian_dram">Dram armenio</string>
+    <string name="netherlands_antillian_guilder">Países Bajos Antillian Guilder</string>
+    <string name="angolan_kwanza">Rescate angoleño</string>
+    <string name="argentine_peso">Argentine Peso</string>
+    <string name="australian_dollar">Dólar australiano</string>
+    <string name="aruban_florin">Aruban Florin</string>
+    <string name="azerbaijani_manat">Azerbaiyani Manat</string>
+    <string name="bosnia_herzegovina_convertible_mark">Marca convertible de Bosnia y Herzegovina</string>
+    <string name="barbados_dollar">Barbados Dollar</string>
+    <string name="bangladeshi_taka">Bangladesh</string>
+    <string name="bulgarian_lev">Lev búlgaro</string>
+    <string name="bahraini_dinar">Dinar Bahreini</string>
+    <string name="burundian_franc">Franco burundiano</string>
+    <string name="bermudian_dollar">Dólar bermudiano</string>
+    <string name="brunei_dollar">Brunei dólar</string>
+    <string name="bolivian_boliviano">Boliviano boliviano</string>
+    <string name="brazilian_real">Real brasileño</string>
+    <string name="bahamian_dollar">Dólar bahamiano</string>
+    <string name="tajikistani_somoni">Tajiciika Tajoni</string>
+    <string name="bhutanese_ngultrum">Bortru</string>
+    <string name="botswana_pula">Pula de botswana</string>
+    <string name="belarusian_ruble">Rublo bielorrusa</string>
+    <string name="belize_dollar">Belice dólar</string>
+    <string name="canadian_dollar">Dólar canadiense</string>
+    <string name="congolese_franc">Franco congoleño</string>
+    <string name="swiss_franc">Franco suizo</string>
+    <string name="chilean_peso">Peso chileno</string>
+    <string name="chinese_renminbi">Renminbi chino</string>
+    <string name="colombian_peso">Colombian Peso</string>
+    <string name="costa_rican_colon">Colon costarricense</string>
+    <string name="cuban_peso">Cuban Peso</string>
+    <string name="cape_verdean_escudo">Escudo verde del cabo</string>
+    <string name="czech_koruna">Checo koruna</string>
+    <string name="djiboutian_franc">Franco djibutiano</string>
+    <string name="danish_krone">Krone danés</string>
+    <string name="dominican_peso">Dominican Peso</string>
+    <string name="algerian_dinar">Dinar argelino</string>
+    <string name="egyptian_pound">Libra egipcia</string>
+    <string name="eritrean_nakfa">Nakfa eritrea</string>
+    <string name="ethiopian_birr">Birr etíope</string>
+    <string name="euro">Euro</string>
+    <string name="fiji_dollar">Fiji dólares</string>
+    <string name="falkland_islands_pound">Libra de las islas de las Malvinas</string>
+    <string name="faroese_krona">Krona</string>
+    <string name="pound_sterling">Libra esterlina</string>
+    <string name="georgian_lari">Georgian corre</string>
+    <string name="guernsey_pound">Libra de Guernsey</string>
+    <string name="ghanaian_cedi">Cedi ghanés</string>
+    <string name="gibraltar_pound">Libra gibraltar</string>
+    <string name="gambian_dalasi">Dalasa gambiana</string>
+    <string name="guinean_franc">Franco guineano</string>
+    <string name="guatemalan_quetzal">Jóvenes guatemaltecos</string>
+    <string name="guyanese_dollar">Dólar guyanés</string>
+    <string name="hong_kong_dollar">Hong Kong Dollar</string>
+    <string name="honduran_lempira">Honduran Lempira</string>
+    <string name="croatian_kuna">Croata allí</string>
+    <string name="haitian_gourde">Gourde haitiano</string>
+    <string name="hungarian_forint">HÚNGARO</string>
+    <string name="indonesian_rupiah">Rupia indonesia</string>
+    <string name="israeli_new_shekel">Shekel nuevo israelí</string>
+    <string name="manx_pound">Manx libra</string>
+    <string name="indian_rupee">Rupia india</string>
+    <string name="iraqi_dinar">Iraqi Dinar</string>
+    <string name="iranian_rial">Rial iraní</string>
+    <string name="icelandic_krona">Króna islandesa</string>
+    <string name="jersey_pound">Libra de jersey</string>
+    <string name="jamaican_dollar">Dólar jamaicano</string>
+    <string name="jordanian_dinar">Dinar jordano</string>
+    <string name="japanese_yen">Yen japonés</string>
+    <string name="kenyan_shilling">Kenia Shilling</string>
+    <string name="kyrgyzstani_som">Kirgustani soy</string>
+    <string name="cambodian_riel">Camboyo Riel</string>
+    <string name="kiribati_dollar">Kiribati Dollar</string>
+    <string name="comorian_franc">Frank Comor</string>
+    <string name="south_korean_won">Won de Corea del Sur</string>
+    <string name="kuwaiti_dinar">Kuwaiti Dinar</string>
+    <string name="cayman_islands_dollar">Dólar de las islas de Cayman</string>
+    <string name="kazakhstani_tenge">Cómo sostener el tenne</string>
+    <string name="lao_kip">Lao Kip</string>
+    <string name="lebanese_pound">Libra libanesa</string>
+    <string name="sri_lanka_rupee">Sri Lanka comienza</string>
+    <string name="liberian_dollar">Dólar liberiano</string>
+    <string name="lesotho_loti">Lesotho Loti</string>
+    <string name="libyan_dinar">Dinar libio</string>
+    <string name="moroccan_dirham">Dirham marroquí</string>
+    <string name="moldovan_leu">Leu moldavo</string>
+    <string name="malagasy_ariary">Ariaria</string>
+    <string name="macedonian_denar">Macedonian Denar</string>
+    <string name="burmese_kyat">Birmés Kyat</string>
+    <string name="mongolian_togrog">Tögrög mongol</string>
+    <string name="macanese_pataca">Pataca acacanesa</string>
+    <string name="mauritanian_ouguiya">Mauritaniano ouguiya</string>
+    <string name="mauritian_rupee">Rupia mauriciana</string>
+    <string name="maldivian_rufiyaa">Rufiyaa maldiviano</string>
+    <string name="malawian_kwacha">Salan</string>
+    <string name="mexican_peso">Mexican Peso</string>
+    <string name="malaysian_ringgit">Ringgit de Malasia</string>
+    <string name="mozambican_metical">Meticano Metambiqueño</string>
+    <string name="namibian_dollar">Dólar namibio</string>
+    <string name="nigerian_naira">La naira nigeriana</string>
+    <string name="nicaraguan_cordoba">Nicaraguan Córdoba</string>
+    <string name="norwegian_krone">Krone noruego</string>
+    <string name="nepalese_rupee">Rupia nepalí</string>
+    <string name="new_zealand_dollar">Dólar de Nueva Zelanda</string>
+    <string name="omani_rial">Omaní rial</string>
+    <string name="panamanian_balboa">Balboa panameño</string>
+    <string name="peruvian_sol">Sol peruano</string>
+    <string name="papua_new_guinean_kina">Papua Nueva Kina guineana</string>
+    <string name="philippine_peso">Filipino pesa</string>
+    <string name="pakistani_rupee">Mi mochila comienza</string>
+    <string name="polish_zloty">Zloty polaco</string>
+    <string name="paraguayan_guarani">Paraguayo guarani</string>
+    <string name="qatari_riyal">Qatari riyal</string>
+    <string name="romanian_leu">Leo rumano</string>
+    <string name="serbian_dinar">Dinar serbio</string>
+    <string name="russian_ruble">Rublo ruso</string>
+    <string name="rwandan_franc">Ruanda franc</string>
+    <string name="saudi_riyal">Saudi riyal</string>
+    <string name="solomon_islands_dollar">Dólar de las islas Salomón</string>
+    <string name="seychellois_rupee">Seychellois se apresura</string>
+    <string name="sudanese_pound">Libra sudanesa</string>
+    <string name="swedish_krona">Corona sueca</string>
+    <string name="singapore_dollar">Dólar de Singapur</string>
+    <string name="saint_helena_pound">Santa Helena libra</string>
+    <string name="sierra_leonean_leone">Sierra Leona Leona</string>
+    <string name="somali_shilling">Chelín somalí</string>
+    <string name="surinamese_dollar">Dólar surinamese</string>
+    <string name="south_sudanese_pound">Libra sudanesa del sur</string>
+    <string name="sao_tome_principe_dobra">Sao Tome y Prince Dobra</string>
+    <string name="syrian_pound">Libra siria</string>
+    <string name="eswatini_lilangeni">Eswords para hacerme</string>
+    <string name="thai_baht">Baht tailandés</string>
+    <string name="turkmenistan_manat">Turkmenistan Manat</string>
+    <string name="tunisian_dinar">Dinar tunecino</string>
+    <string name="tongan_paanga">Tongan pa \ "anga</string>
+    <string name="turkish_lira">Lira turca</string>
+    <string name="trinidad_tobago_dollar">Trinidad y tobago dólar</string>
+    <string name="tuvaluan_dollar">Tuvaluan Dollar "</string>
+    <string name="new_taiwan_dollar">Nuevo dólar de Taiwán</string>
+    <string name="tanzanian_shilling">Chelín tanzano</string>
+    <string name="ukrainian_hryvnia">Hryvnia ucraniano</string>
+    <string name="ugandan_shilling">Chelín ugandés</string>
+    <string name="united_states_dollar">Dólar de los Estados Unidos</string>
+    <string name="uruguayan_peso">Uruguayan Peso</string>
+    <string name="uzbekistani_som">Uzbekistani soy</string>
+    <string name="venezuelan_bolivar">Venezuelan Bolívar</string>
+    <string name="vietnamese_dong">Dong vietnamita</string>
+    <string name="vanuatu_vatu">Vanuatu vatu</string>
+    <string name="samoan_tala">Noticias</string>
+    <string name="central_african_cfa_franc">Franco de África central</string>
+    <string name="east_caribbean_dollar">Dólar caribeño del este</string>
+    <string name="caribbean_guilder">Guilder del Caribe</string>
+    <string name="special_drawing_rights">Derechos de dibujo especiales</string>
+    <string name="west_african_cfa_franc">CFA de África Occidental Franc</string>
+    <string name="cfp_franc">Franco de CFP</string>
+    <string name="yemeni_rial">Yemení rial</string>
+    <string name="south_african_rand">Rand sudafricano</string>
+    <string name="zambian_kwacha">Kokha zambiano</string>
+    <string name="zimbabwean_dollar">Dólar zimbabuense</string>
+
+    <!-- Notification Channel -->
+    <string name="notification_channel_name">Notificaciones de divisas</string>
+    <string name="notification_channel_description">Notificaciones para recordatorios de divisas diarias</string>
+
+    <!-- User Profile Page -->
+    <string name="user_profile">Perfil de usuario</string>
+    <string name="name_format">Nombre: %1$s</string>
+    <string name="email_format">Correo electrónico: %1$s</string>
+    <string name="no_email">Sin correo electrónico</string>
+    <string name="user_default">Usuario</string>
+
+    <!-- Notification Settings -->
+    <string name="notification_settings">Configuración de notificación</string>
+    <string name="daily_currency_reminder">Recordatorio diario de moneda:</string>
+    <string name="notifications_enabled_time">Notificaciones habilitadas a las 2:00 pm diariamente</string>
+    <string name="test_notification">Notificación de prueba (30 segundos)</string>
+    <string name="test_notification_desc">Presione para probar la notificación (aparece después de 30 segundos)</string>
+    <string name="notification_title">Recordatorio de moneda</string>
+    <string name="notification_text">¡No te olvides de revisar tus monedas hoy!</string>
+
+    <!-- Notification Settings Time Values -->
+    <string name="notification_daily_hour">14</string>
+    <string name="notification_test_delay_ms">30000</string>
+
+    <!-- Logout -->
+    <string name="logout">Cierre de sesión</string>
+
+    <!-- Login Page -->
+    <string name="sign_in_with_google">Inicie sesión con Google</string>
+    <string name="login_icon_description">Acceso</string>
+    <string name="welcome_message">¡Bienvenido!</string>
+    <string name="sign_out">Desconectar</string>
+
+    <!-- Biometric Login Page -->
+    <string name="biometric_login">Inicio de sesión biométrico</string>
+    <string name="use_fingerprint">Use huellas digitales</string>
+    <string name="biometric_prompt_title">Autenticar para continuar</string>
+    <string name="biometric_prompt_subtitle">Autenticar para acceder a su cuenta</string>
+    <string name="biometric_prompt_negative_button">Cancelar</string>
+
+    <!-- Favorites Page -->
+    <string name="favorite_currencies">Monedas favoritas</string>
+    <string name="no_favorites">No tienes ninguna monedas favoritas todavía</string>
+    <string name="add_some_favorites">Agregue algunos favoritos haciendo clic en el icono de estrella en cualquier moneda</string>
+
+    <!-- Google Login Page -->
+    <string name="google_sign_in">Iniciar sesión en Google</string>
+    <string name="continue_with_google">Continuar con Google</string>
+    <string name="continue_as_guest">Continuar como invitado</string>
+
+    <!-- Navigation Bar Items -->
+    <string name="nav_swap">INTERCAMBIO</string>
+    <string name="nav_search">BUSCAR</string>
+    <string name="nav_starred">FAVORITOS</string>
+    <string name="nav_user">USUARIO</string>
+</resources>
+

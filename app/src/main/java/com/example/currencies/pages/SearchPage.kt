@@ -29,7 +29,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.currencies.search.components.FilterModalBottomSheet
 import com.example.currencies.search.components.ScrollableCurrencyList
@@ -76,7 +75,7 @@ fun SearchPage(hideKeyBoard: MutableState<Boolean>) {
                             if (filter.type == FilterType.CURRENCY) {
                                 "${filter.value} $currencyMode"
                             } else {
-                                filter.value
+                                filterViewModel.getKeyFromContinentKey(filter.value).orEmpty()
                             }
                         ) },
                         selected = true,

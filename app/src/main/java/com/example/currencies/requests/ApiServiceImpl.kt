@@ -1,6 +1,5 @@
 package com.example.currencies.requests
 
-import DayScheme
 import android.content.Context
 import android.os.Build
 import android.widget.Toast
@@ -10,6 +9,7 @@ import com.example.currencies.R
 import com.example.currencies.responses.HistoricalPointResponse
 import com.example.currencies.responses.LatestRatesResponse
 import com.example.currencies.responses.PairConversionResponse
+import com.example.currencies.types.DayScheme
 import com.example.currencies.types.HistoricalPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
 import retrofit.Call

@@ -1,6 +1,5 @@
 package com.example.currencies.search.components
 
-import DayScheme
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.horizontalScroll
@@ -16,6 +15,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
@@ -38,6 +38,7 @@ import com.example.currencies.search_filter.ActionFilter
 import com.example.currencies.search_filter.CurrencyMode
 import com.example.currencies.search_filter.Filter
 import com.example.currencies.search_filter.FilterType
+import com.example.currencies.types.DayScheme
 import com.example.currencies.ui.theme.Padding
 import com.example.currencies.viewmodels.AllCurrenciesValuesViewModel
 
@@ -92,7 +93,7 @@ fun FilterModalBottomSheet(
                         ) {
                             // Anchor element
                             OutlinedTextField(
-                                modifier = Modifier.menuAnchor(),
+                                modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryEditable, true),
                                 readOnly = true,
                                 value = selectedOption.name.lowercase(),
                                 onValueChange = {},
@@ -145,12 +146,14 @@ fun FilterModalBottomSheet(
                     val mid = continents.size / 2
                     val firstHalf = continents.subList(0, mid)
                     val secondHalf = continents.subList(mid, continents.size)
-                    FilterRow(filters, firstHalf) {continent ->
-                        val filter = Filter(FilterType.CONTINENT, continent)
+                    FilterRow(filterViewModel, filters, firstHalf) { continentDisplay ->
+                        val continentKey = filterViewModel.getContinentKeyFromDisplayName(continentDisplay)
+                        val filter = Filter(FilterType.CONTINENT, continentKey)
                         onFilterClick(filter)
                     }
-                    FilterRow(filters, secondHalf) {continent ->
-                        val filter = Filter(FilterType.CONTINENT, continent)
+                    FilterRow(filterViewModel, filters, secondHalf) { continentDisplay ->
+                        val continentKey = filterViewModel.getContinentKeyFromDisplayName(continentDisplay)
+                        val filter = Filter(FilterType.CONTINENT, continentKey)
                         onFilterClick(filter)
                     }
                     HorizontalDivider(
@@ -191,7 +194,7 @@ fun FilterModalBottomSheet(
                     }
 
                     val acceptedValues: List<String> = listOf(50, 100, 200, 500, 1000).map { it.toString() }
-                    FilterRow(filters, acceptedValues) {
+                    FilterRow(filterViewModel, filters, acceptedValues) {
                         value ->
                         val filter = Filter(FilterType.CURRENCY, value)
                         if (filters.any { it == filter }) {
@@ -206,8 +209,9 @@ fun FilterModalBottomSheet(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-private fun FilterRow(selectedFilters:List<Filter>, filters:List<String>, onClick: (String) -> Unit) {
+private fun FilterRow(filterViewModel: AllCurrenciesValuesViewModel,selectedFilters:List<Filter>, filters:List<String>, onClick: (String) -> Unit) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(Padding.medium),
         verticalAlignment = Alignment.CenterVertically,
@@ -219,10 +223,18 @@ private fun FilterRow(selectedFilters:List<Filter>, filters:List<String>, onClic
             ActionFilter(
                 label = { Text(filter) },
                 onClick = { onClick(filter) },
-                selected = selectedFilters.any { it.value == filter },
+                selected = selectedFilters.any {
+                    if (it.type == FilterType.CONTINENT) {
+                        // Compare using display name for continents
+                        it.value == filterViewModel.getContinentKeyFromDisplayName(filter)
+                    } else {
+                        it.value == filter
+                    }
+                },
                 enabled = true
             )
         }
     }
 
 }
+

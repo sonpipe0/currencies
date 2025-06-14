@@ -17,6 +17,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,21 +27,29 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.currencies.viewmodels.AllCurrenciesValuesViewModel
 import dropShadow
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ScrollableCurrencyList(
     prefix: MutableState<String>,
 ) {
-    val allCurrenciesValuesViewModels = hiltViewModel<AllCurrenciesValuesViewModel>()
-    val currencyRates by allCurrenciesValuesViewModels.currencies.collectAsState()
-    val isLoading by allCurrenciesValuesViewModels.loading.collectAsState()
-    val filters by allCurrenciesValuesViewModels.filters.collectAsState()
-    val currencyMode by allCurrenciesValuesViewModels.currencyMode.collectAsState()
-    val showRetry by allCurrenciesValuesViewModels.showRetry.collectAsState()
+    val viewModel = hiltViewModel<AllCurrenciesValuesViewModel>()
+    val currencyRates by viewModel.currencies.collectAsState()
+    val isLoading by viewModel.loading.collectAsState()
+    val filters by viewModel.filters.collectAsState()
+    val currencyMode by viewModel.currencyMode.collectAsState()
+    val showRetry by viewModel.showRetry.collectAsState()
+    val favoriteCurrencies by viewModel.favoriteCurrencies.collectAsState(initial = emptyList())
+    val coroutineScope = rememberCoroutineScope()
+
+    // Create a map of currency codes to favorite status for quick lookup
+    val favoriteCodesMap = remember(favoriteCurrencies) {
+        favoriteCurrencies.associate { it.code to true }
+    }
 
     LaunchedEffect(prefix.value, filters, currencyMode) {
-        allCurrenciesValuesViewModels.filterCurrencies(
+        viewModel.filterCurrencies(
             prefix = prefix.value,
         )
     }
@@ -55,7 +65,7 @@ fun ScrollableCurrencyList(
         Box(
             modifier = Modifier.fillMaxSize().
             clickable {
-                allCurrenciesValuesViewModels.retry(base = "USD")
+                viewModel.retry(base = "USD")
             },
             contentAlignment = Alignment.Center
         ) {
@@ -78,10 +88,14 @@ fun ScrollableCurrencyList(
                 CurrencyRateCard(
                     currencyRate = currencyRate,
                     last = index == currencyRates.size - 1,
-                    onFavorite = {},
+                    onFavorite = {
+                        coroutineScope.launch {
+                            viewModel.toggleFavorite(currencyRate)
+                        }
+                    },
+                    isFavorite = favoriteCodesMap.containsKey(currencyRate.code)
                 )
             }
         }
     }
 }
-

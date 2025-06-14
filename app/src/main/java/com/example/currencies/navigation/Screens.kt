@@ -5,5 +5,7 @@ enum class Screens {
     STARRED,
     SWAP,
     USER,
-    GRAPH
+    GRAPH,
+    LOGIN,
+    USER_CONFIG,
 }

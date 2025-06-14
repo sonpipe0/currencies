@@ -22,18 +22,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.util.fastRoundToInt
 import com.example.currencies.search.types.CurrencyRate
-import com.example.currencies.ui.theme.Border
 import com.example.currencies.ui.theme.Box
 import com.example.currencies.ui.theme.Padding
-import java.util.Locale
-import kotlin.math.abs
 import kotlin.math.pow
 import kotlin.math.round
 

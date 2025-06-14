@@ -2,7 +2,6 @@ package com.example.currencies.ui.theme
 
 // this  file defines the dimensions used in the app
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.unit.dp
 
 

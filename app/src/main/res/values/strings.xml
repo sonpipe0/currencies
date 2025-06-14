@@ -182,4 +182,61 @@
     <string name="south_african_rand">South African Rand</string>
     <string name="zambian_kwacha">Zambian Kwacha</string>
     <string name="zimbabwean_dollar">Zimbabwean Dollar</string>
+
+    <!-- Notification Channel -->
+    <string name="notification_channel_name">Currency Notifications</string>
+    <string name="notification_channel_description">Notifications for daily currency reminders</string>
+
+    <!-- User Profile Page -->
+    <string name="user_profile">User Profile</string>
+    <string name="name_format">Name: %1$s</string>
+    <string name="email_format">Email: %1$s</string>
+    <string name="no_email">No email</string>
+    <string name="user_default">User</string>
+
+    <!-- Notification Settings -->
+    <string name="notification_settings">Notification Settings</string>
+    <string name="daily_currency_reminder">Daily Currency Reminder:</string>
+    <string name="notifications_enabled_time">Notifications enabled at 2:00 PM daily</string>
+    <string name="test_notification">Test Notification (30 sec)</string>
+    <string name="test_notification_desc">Press to test notification (appears after 30 seconds)</string>
+    <string name="notification_title">Currency Reminder</string>
+    <string name="notification_text">Don\'t forget to check your currencies today!</string>
+
+    <!-- Notification Settings Time Values -->
+    <string name="notification_daily_hour">14</string> <!-- 2:00 PM in 24-hour format -->
+    <string name="notification_test_delay_ms">30000</string> <!-- 30 seconds in milliseconds -->
+
+    <!-- Logout -->
+    <string name="logout">Logout</string>
+
+    <!-- Login Page -->
+    <string name="sign_in_with_google">Sign in with Google</string>
+    <string name="login_icon_description">Login</string>
+    <string name="welcome_message">Welcome!</string>
+    <string name="sign_out">Sign Out</string>
+
+    <!-- Biometric Login Page -->
+    <string name="biometric_login">Biometric Login</string>
+    <string name="use_fingerprint">Use Fingerprint</string>
+    <string name="biometric_prompt_title">Authenticate to continue</string>
+    <string name="biometric_prompt_subtitle">Please authenticate to access your account</string>
+    <string name="biometric_prompt_negative_button">Cancel</string>
+
+    <!-- Favorites Page -->
+    <string name="favorite_currencies">Favorite Currencies</string>
+    <string name="no_favorites">You don\'t have any favorite currencies yet</string>
+    <string name="add_some_favorites">Add some favorites by clicking the star icon on any currency</string>
+
+    <!-- Google Login Page -->
+    <string name="google_sign_in">Google Sign In</string>
+    <string name="continue_with_google">Continue with Google</string>
+    <string name="continue_as_guest">Continue as Guest</string>
+
+    <!-- Navigation Bar Items -->
+    <string name="nav_swap">SWAP</string>
+    <string name="nav_search">SEARCH</string>
+    <string name="nav_starred">STARRED</string>
+    <string name="nav_user">USER</string>
 </resources>
+

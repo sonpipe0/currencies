@@ -1,12 +1,15 @@
 package com.example.currencies.viewmodels
 
-import DayScheme
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewModelScope
+import com.example.currencies.R
+import com.example.currencies.database.CurrencyDatabase
+import com.example.currencies.database.FavoriteCurrency
 import com.example.currencies.requests.ApiServiceImpl
 import com.example.currencies.requests.currencyCodes
 import com.example.currencies.responses.LatestRatesResponse
@@ -14,6 +17,7 @@ import com.example.currencies.search.types.CurrencyRate
 import com.example.currencies.search_filter.CurrencyMode
 import com.example.currencies.search_filter.Filter
 import com.example.currencies.search_filter.FilterType
+import com.example.currencies.types.DayScheme
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +27,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -31,10 +36,16 @@ class AllCurrenciesValuesViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val apiServiceImpl: ApiServiceImpl
 ) : ViewModel() {
+
+    private val database = CurrencyDatabase.getDatabase(context)
+    private val favoriteCurrencyDao = database.favoriteCurrencyDao()
+
+    val favoriteCurrencies = favoriteCurrencyDao.getAllFavorites().asFlow()
+
     private val _currencies = MutableStateFlow<List<CurrencyRate>>(emptyList())
     val currencies = _currencies.asStateFlow()
 
-    private val _dayScheme = MutableStateFlow<DayScheme>(DayScheme.DAILY)
+    private val _dayScheme = MutableStateFlow(DayScheme.DAILY)
     val dayScheme = _dayScheme.asStateFlow()
 
     private val _staticCurrencies = MutableStateFlow<List<CurrencyRate>>(emptyList())
@@ -136,7 +147,7 @@ class AllCurrenciesValuesViewModel @Inject constructor(
                             CurrencyRate(
                                 name = name!!,
                                 code = key,
-                                value = String.format("%.2f", value).toDouble(),
+                                value = String.format(Locale.US, "%.2f", value).toDouble(),
                                 dailyChangePercentage = 1.0, //this change will be used when we have memory: TODO()
                                 dailyChangeValue = 1.0,      //this change will be used when we have memory: TODO()
                                 continent = continent!!
@@ -177,7 +188,8 @@ class AllCurrenciesValuesViewModel @Inject constructor(
                         _filters.value.all { filter ->
                             when (filter.type) {
                                 FilterType.CONTINENT -> {
-                                    filter.value == currencyRate.continent
+                                    val continentKey = getContinentKeyFromDisplayName(filter.value)
+                                    currencyRate.continent == continentKey
                                 }
 
                                 FilterType.CURRENCY -> {
@@ -204,6 +216,32 @@ class AllCurrenciesValuesViewModel @Inject constructor(
         if (_isSearching.value) return
         viewModelScope.launch {
             _loading.emit(boolean)
+        }
+    }
+
+
+    fun getContinentKeyFromDisplayName(displayName: String): String {
+        val res = context.resources
+        return when (displayName) {
+            res.getString(R.string.africa) -> "Africa"
+            res.getString(R.string.asia) -> "Asia"
+            res.getString(R.string.western_europe) -> "Western Europe"
+            res.getString(R.string.eastern_europe) -> "Eastern Europe"
+            res.getString(R.string.oceania) -> "Oceania"
+            res.getString(R.string.america) -> "America"
+            else -> displayName
+        }
+    }
+
+    fun getKeyFromContinentKey(continentKey: String): String {
+        return when (continentKey) {
+            "Africa" -> context.getString(R.string.africa)
+            "Asia" -> context.getString(R.string.asia)
+            "Western Europe" -> context.getString(R.string.western_europe)
+            "Eastern Europe" -> context.getString(R.string.eastern_europe)
+            "Oceania" -> context.getString(R.string.oceania)
+            "America" -> context.getString(R.string.america)
+            else -> continentKey
         }
     }
 
@@ -253,6 +291,70 @@ class AllCurrenciesValuesViewModel @Inject constructor(
     fun changeCurrencyMode(mode: CurrencyMode) {
         viewModelScope.launch {
             _currencyMode.emit(mode)
+        }
+    }
+
+    /**
+     * Toggle favorite status of a currency
+     * Also updates the currency with the latest fetched values
+     * @param currencyRate The currency to toggle favorite status
+     */
+    fun toggleFavorite(currencyRate: CurrencyRate) {
+        viewModelScope.launch {
+            // Find the most up-to-date values for this currency from the fetched currencies
+            val updatedCurrency = _staticCurrencies.value.find { it.code == currencyRate.code } ?: currencyRate
+
+            // Check if currency is already a favorite
+            val isFavorite = favoriteCurrencyDao.isFavorite(updatedCurrency.code)
+
+            if (isFavorite) {
+                // Remove from favorites
+                favoriteCurrencyDao.deleteFavoriteByCode(updatedCurrency.code)
+            } else {
+                // Add to favorites with latest values
+                val favoriteCurrency = FavoriteCurrency(
+                    code = updatedCurrency.code,
+                    name = updatedCurrency.name,
+                    continent = updatedCurrency.continent,
+                    value = updatedCurrency.value,
+                    dailyChangePercentage = updatedCurrency.dailyChangePercentage
+                )
+                favoriteCurrencyDao.insertFavorite(favoriteCurrency)
+            }
+        }
+    }
+
+    /**
+     * Check if a currency is a favorite
+     */
+    suspend fun isFavorite(currencyCode: String): Boolean {
+        return favoriteCurrencyDao.isFavorite(currencyCode)
+    }
+
+    /**
+     * Updates the values of favorite currencies with the latest fetched data
+     * Call this when favorite currencies are loaded or when new data is fetched
+     */
+    fun updateFavoriteCurrenciesValues() {
+        viewModelScope.launch {
+            // Get the current list of favorite currencies
+            val favorites = favoriteCurrencyDao.getAllFavorites().value ?: emptyList()
+
+            if (favorites.isNotEmpty() && _staticCurrencies.value.isNotEmpty()) {
+                // For each favorite, find its corresponding up-to-date data in staticCurrencies
+                favorites.forEach { favoriteCurrency ->
+                    val currentData = _staticCurrencies.value.find { it.code == favoriteCurrency.code }
+
+                    if (currentData != null) {
+                        // Update the favorite with current values
+                        favoriteCurrencyDao.updateFavoriteCurrencyValues(
+                            favoriteCurrency.code,
+                            currentData.value,
+                            currentData.dailyChangePercentage
+                        )
+                    }
+                }
+            }
         }
     }
 }

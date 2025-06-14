@@ -46,8 +46,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.currencies.R
 import com.example.currencies.search.components.roundToDigits
-import com.example.currencies.swap.SwapPageInstructions
 import com.example.currencies.swap.SwapInputSelector
+import com.example.currencies.swap.SwapPageInstructions
 import com.example.currencies.ui.theme.Border
 import com.example.currencies.ui.theme.Icon
 import com.example.currencies.ui.theme.Padding
@@ -56,7 +56,6 @@ import com.example.currencies.viewmodels.ExchangeRateViewModel
 import dropShadow
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
